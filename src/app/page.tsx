@@ -1,6 +1,7 @@
 import StatsCards from "@/components/pages/Home/StatsCards/StatsCards";
 import LowStockProduct from "@/components/pages/Home/LowStockProducts/LowStockProduct";
 import RecentTransactions from "@/components/pages/Home/RecentTransactions/RecentTransactions";
+import Chart from "@/components/pages/Home/Chart/Chart";
 
 export default function Home() {
   return (
@@ -13,6 +14,9 @@ export default function Home() {
             <div>
                 <RecentTransactions/>
             </div>
+        </div>
+        <div className="mt-5 w-full">
+            <Chart/>
         </div>
     </div>
   );
