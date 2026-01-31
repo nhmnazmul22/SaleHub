@@ -8,3 +8,12 @@ export interface StatType  {
     trend: { value: number, isUp: boolean },
     color: string,
 }
+export  interface ItemType{
+    id: string |number,
+    name: string,
+    sku: string,
+    branch: string,
+    currentQty: number,
+    threshold: number,
+    status: string,
+}
