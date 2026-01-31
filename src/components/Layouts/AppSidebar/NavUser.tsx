@@ -68,15 +68,15 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem className="group">
-                <UserCircle className="group-hover:text-white"/>
+                <UserCircle className="group-hover:not-dark:text-white"/>
                 Account
               </DropdownMenuItem>
               <DropdownMenuItem className="group">
-                <Bell className="group-hover:text-white"/>
+                <Bell className="group-hover:not-dark:text-white"/>
                 Notifications
               </DropdownMenuItem>
-                <DropdownMenuItem>
-                    <Settings className="group-hover:text-white" />
+                <DropdownMenuItem className="group">
+                    <Settings className="group-hover:not-dark:text-white" />
                     Settings
                 </DropdownMenuItem>
             </DropdownMenuGroup>

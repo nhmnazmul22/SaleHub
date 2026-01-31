@@ -38,7 +38,9 @@ export default function RootLayout({
               <AppSidebar/>
               <main className="w-full">
                   <Navbar/>
-                  {children}
+                  <div className="p-5">
+                      {children}
+                  </div>
               </main>
           </SidebarProvider>
       </ThemeProvider>

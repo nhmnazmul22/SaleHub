@@ -1,21 +1,22 @@
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
+    Sidebar,
+    SidebarContent,
+    SidebarFooter,
+    SidebarHeader,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Logo from "@/components/common/Logo/Logo";
-import { Separator } from "@/components/ui/separator";
-import { menuItems } from "@/constants";
+import {Separator} from "@/components/ui/separator";
+import {menuItems} from "@/constants";
 import Link from "next/link";
-import { NavUser } from "./NavUser";
+import {NavUser} from "./NavUser";
+
 const AppSidebar = () => {
   return (
     <Sidebar>
-      <SidebarHeader className="p-5">
+      <SidebarHeader className="px-5 py-3">
         <Logo />
       </SidebarHeader>
       <Separator />
