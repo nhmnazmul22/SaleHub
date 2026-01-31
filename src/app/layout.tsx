@@ -1,9 +1,11 @@
 import React from "react";
-import type { Metadata } from "next";
-import { Poppins} from "next/font/google";
+import type {Metadata} from "next";
+import {Poppins} from "next/font/google";
 import "./globals.css";
 import AppSidebar from "@/components/Layouts/AppSidebar/AppSidebar";
-import {SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar";
+import {SidebarProvider} from "@/components/ui/sidebar";
+import Navbar from "@/components/Layouts/Navbar/Navbar";
+import {ThemeProvider} from "@/providers/ThemeProvider";
 
 const PoppinsFont = Poppins({
     variable: "--font-poppins",
@@ -26,13 +28,20 @@ export default function RootLayout({
       <body
         className={`${PoppinsFont.className} antialiased`}
       >
-      <SidebarProvider>
-          <AppSidebar/>
-          <main>
-              <SidebarTrigger/>
-              {children}
-          </main>
-      </SidebarProvider>
+      <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+      >
+          <SidebarProvider>
+              <AppSidebar/>
+              <main className="w-full">
+                  <Navbar/>
+                  {children}
+              </main>
+          </SidebarProvider>
+      </ThemeProvider>
       </body>
     </html>
   );
