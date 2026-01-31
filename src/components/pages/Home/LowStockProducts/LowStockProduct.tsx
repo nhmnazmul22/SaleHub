@@ -16,11 +16,11 @@ const LowStockProduct = () => {
 
 
     return (
-        <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <Card className="gap-0">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
                 <div className="flex items-center gap-2">
                     <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
-                    <CardTitle>Low Stock Alerts</CardTitle>
+                    <CardTitle className="text-lg">Low Stock Alerts</CardTitle>
                 </div>
                 <Button variant="outline" size="sm" className="hover:dark:text-white">
                     View All

@@ -23,7 +23,6 @@ export const menuItems = [
     { id: 'reports', label: 'Reports', icon: BarChart3, href: '/reports' },
 ]
 
-
 export const stats = [
     {
         title: 'Total Products',
@@ -100,5 +99,44 @@ export const items = [
         currentQty: 3,
         threshold: 15,
         status: 'critical',
+    },
+]
+
+export const transactions = [
+    {
+        id: 1,
+        date: 'Jan 28, 2025',
+        type: 'Sale',
+        branch: 'Main Branch',
+        total: '$1,240',
+        status: 'Completed',
+        icon: ShoppingCart,
+    },
+    {
+        id: 2,
+        date: 'Jan 27, 2025',
+        type: 'Purchase',
+        branch: 'Downtown',
+        total: '$3,850',
+        status: 'Pending',
+        icon: Truck,
+    },
+    {
+        id: 3,
+        date: 'Jan 26, 2025',
+        type: 'Transfer',
+        branch: 'Mall Branch',
+        total: '$680',
+        status: 'Completed',
+        icon: Package,
+    },
+    {
+        id: 4,
+        date: 'Jan 25, 2025',
+        type: 'Sale',
+        branch: 'Airport',
+        total: '$2,120',
+        status: 'Completed',
+        icon: ShoppingCart,
     },
 ]
