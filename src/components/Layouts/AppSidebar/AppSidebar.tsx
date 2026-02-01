@@ -25,7 +25,7 @@ const AppSidebar = () => {
           {menuItems.map((item) => (
             <SidebarMenuItem key={item.id}>
               <SidebarMenuButton asChild>
-                <Link className="p-5" href={item.id}>
+                <Link className="p-5" href={item.href}>
                   <item.icon />
                   <span>{item.label}</span>
                 </Link>
