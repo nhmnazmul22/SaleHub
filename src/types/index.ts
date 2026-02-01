@@ -17,3 +17,16 @@ export  interface ItemType{
     threshold: number,
     status: string,
 }
+
+
+export interface Branch {
+    id: number
+    name: string
+    location: string
+    status: string
+    employees: number
+    products: number
+    revenue?: string
+    orders?: number
+    growth?: string
+}

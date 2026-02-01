@@ -11,6 +11,7 @@ import {
     Truck,
     Zap
 } from "lucide-react";
+import {Branch} from "@/types";
 
 export const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: Home, href: '/' },
@@ -139,4 +140,12 @@ export const transactions = [
         status: 'Completed',
         icon: ShoppingCart,
     },
+]
+
+
+export const initialBranches: Branch[] = [
+    { id: 1, name: 'Main Branch', location: 'New York, NY', status: 'Active', employees: 12, products: 450, revenue: '$125,450', orders: 342, growth: '+12.5%' },
+    { id: 2, name: 'Downtown Store', location: 'Los Angeles, CA', status: 'Active', employees: 8, products: 320, revenue: '$98,230', orders: 267, growth: '+8.3%' },
+    { id: 3, name: 'Airport Hub', location: 'Chicago, IL', status: 'Active', employees: 6, products: 280, revenue: '$76,890', orders: 189, growth: '+5.2%' },
+    { id: 4, name: 'Warehouse East', location: 'Miami, FL', status: 'Inactive', employees: 0, products: 0, revenue: '$0', orders: 0, growth: '0%' },
 ]
