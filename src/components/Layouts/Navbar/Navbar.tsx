@@ -4,6 +4,7 @@ import {Moon, Sun} from 'lucide-react'
 import {useTheme} from 'next-themes'
 import {Button} from '@/components/ui/button'
 import {SidebarTrigger} from "@/components/ui/sidebar";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select"
 
 
 const Navbar = () => {
@@ -13,11 +14,20 @@ const Navbar = () => {
         <header className="sticky top-0 z-40 w-full border-b border-border bg-background px-3 py-4 shadow-sm">
             <div className="flex items-center justify-between">
                 <SidebarTrigger />
-                <h1 className="hidden text-xl font-semibold text-foreground md:block md:flex-1 md:text-center lg:text-left">
-                    Dashboard
-                </h1>
-
+                
                 <div className="flex items-center gap-2 md:gap-4">
+                    <Select>
+                        <SelectTrigger className="w-full max-w-48 border-border dark:border-neutral-700">
+                            <SelectValue placeholder="Select Branch" />
+                        </SelectTrigger>
+                        <SelectContent>
+                                <SelectItem value="apple">Dhaka Branch</SelectItem>
+                                <SelectItem value="banana">Cumilla Branch</SelectItem>
+                                <SelectItem value="blueberry">Demra Branch</SelectItem>
+                                <SelectItem value="grapes">Chittagong Branch</SelectItem>
+                                <SelectItem value="pineapple">Barishal Branch</SelectItem>
+                        </SelectContent>
+                    </Select>
                     <Button
                         variant="ghost"
                         size="sm"
