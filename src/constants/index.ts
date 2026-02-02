@@ -157,3 +157,12 @@ export  const initialProducts: Product[] = [
     { id: 'SKU004', name: 'Monitor Stand', category: 'Furniture', price: '$45.00', status: 'Active', stock: 62 },
     { id: 'SKU005', name: 'Desk Lamp', category: 'Lighting', price: '$34.99', status: 'Low Stock', stock: 8 },
 ]
+
+
+export const inventoryItems = [
+    { id: 1, product: 'Wireless Mouse', branch: 'Main Branch', quantity: 145, threshold: 50, status: 'Optimal' },
+    { id: 2, product: 'USB-C Cable', branch: 'Downtown Store', quantity: 320, threshold: 100, status: 'Optimal' },
+    { id: 3, product: 'Mechanical Keyboard', branch: 'Airport Hub', quantity: 45, threshold: 30, status: 'Low' },
+    { id: 4, product: 'Monitor Stand', branch: 'Main Branch', quantity: 8, threshold: 20, status: 'Critical' },
+    { id: 5, product: 'Desk Lamp', branch: 'Downtown Store', quantity: 120, threshold: 40, status: 'Optimal' },
+]
