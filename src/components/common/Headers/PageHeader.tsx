@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import {Button} from "@/components/ui/button";
 import {Plus} from "lucide-react";
@@ -19,7 +20,7 @@ const PageHeader = ({title, des, isAction, createActionHandler, actionBtnLabel}:
                 <p className="text-muted-foreground mt-1">{des}</p>
             </div>
             {isAction && (
-                <Button onClick={createActionHandler} className="gap-2 h-10">
+                <Button onClick={createActionHandler} className="gap-2 h-10 dark:text-slate-300">
                     <Plus className="h-4 w-4" />
                     {actionBtnLabel}
                 </Button>
