@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {AlertCircle, Edit2, Eye, MapPin, Package, Trash2, TrendingUp, Users} from "lucide-react";

@@ -3,7 +3,8 @@ import PageHeader from "@/components/common/Headers/PageHeader";
 import BranchList from "@/components/pages/Branches/BrancheList/BranchList";
 
 const BranchesPage = () => {
-    const handleCreate = () => {
+    const handleCreate = async () => {
+        "use server";
         alert('Create new branch modal')
     }
 
