@@ -11,7 +11,7 @@ import {
     Truck,
     Zap
 } from "lucide-react";
-import {Branch} from "@/types";
+import {Branch, Product} from "@/types";
 
 export const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: Home, href: '/' },
@@ -148,4 +148,12 @@ export const initialBranches: Branch[] = [
     { id: 2, name: 'Downtown Store', location: 'Los Angeles, CA', status: 'Active', employees: 8, products: 320, revenue: '$98,230', orders: 267, growth: '+8.3%' },
     { id: 3, name: 'Airport Hub', location: 'Chicago, IL', status: 'Active', employees: 6, products: 280, revenue: '$76,890', orders: 189, growth: '+5.2%' },
     { id: 4, name: 'Warehouse East', location: 'Miami, FL', status: 'Inactive', employees: 0, products: 0, revenue: '$0', orders: 0, growth: '0%' },
+]
+
+export  const initialProducts: Product[] = [
+    { id: 'SKU001', name: 'Wireless Mouse', category: 'Electronics', price: '$29.99', status: 'Active', stock: 145 },
+    { id: 'SKU002', name: 'USB-C Cable', category: 'Accessories', price: '$12.99', status: 'Active', stock: 320 },
+    { id: 'SKU003', name: 'Mechanical Keyboard', category: 'Electronics', price: '$79.99', status: 'Active', stock: 45 },
+    { id: 'SKU004', name: 'Monitor Stand', category: 'Furniture', price: '$45.00', status: 'Active', stock: 62 },
+    { id: 'SKU005', name: 'Desk Lamp', category: 'Lighting', price: '$34.99', status: 'Low Stock', stock: 8 },
 ]
