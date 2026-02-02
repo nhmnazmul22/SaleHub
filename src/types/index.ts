@@ -40,3 +40,13 @@ export interface Product {
     status: string
     stock: number
 }
+
+
+export interface SalesOrder {
+    id: string
+    customer: string
+    items: number
+    total: string
+    date: string
+    status: string
+}

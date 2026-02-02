@@ -11,7 +11,7 @@ import {
     Truck,
     Zap
 } from "lucide-react";
-import {Branch, Product} from "@/types";
+import {Branch, Product, SalesOrder} from "@/types";
 
 export const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: Home, href: '/' },
@@ -165,4 +165,12 @@ export const inventoryItems = [
     { id: 3, product: 'Mechanical Keyboard', branch: 'Airport Hub', quantity: 45, threshold: 30, status: 'Low' },
     { id: 4, product: 'Monitor Stand', branch: 'Main Branch', quantity: 8, threshold: 20, status: 'Critical' },
     { id: 5, product: 'Desk Lamp', branch: 'Downtown Store', quantity: 120, threshold: 40, status: 'Optimal' },
+]
+
+export const initialSalesOrders: SalesOrder[] = [
+    { id: 'SAL001', customer: 'Acme Corp', items: 5, total: '$450.00', date: '2024-01-28', status: 'Completed' },
+    { id: 'SAL002', customer: 'Tech Solutions', items: 12, total: '$1,290.00', date: '2024-01-27', status: 'Completed' },
+    { id: 'SAL003', customer: 'Global Retail', items: 8, total: '$720.00', date: '2024-01-27', status: 'Pending' },
+    { id: 'SAL004', customer: 'Store Network', items: 3, total: '$210.00', date: '2024-01-26', status: 'Completed' },
+    { id: 'SAL005', customer: 'Quick Shop', items: 15, total: '$1,620.00', date: '2024-01-26', status: 'Processing' },
 ]
