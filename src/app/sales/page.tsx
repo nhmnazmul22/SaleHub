@@ -1,14 +1,12 @@
 import React from 'react';
 import PageHeader from "@/components/common/Headers/PageHeader";
+import SalesTable from "@/components/pages/Sales/SalesTable/SalesTable";
 
 const SalesPage = () => {
-
     const handleCreate =async ()=>{
         "use server";
         console.log("I am creating sale")
     }
-
-
     return (
         <div className="space-y-8">
             <PageHeader
@@ -18,7 +16,7 @@ const SalesPage = () => {
              createActionHandler={handleCreate}
              actionBtnLabel={"New Sales Order"}
             />
-           <SalesPage/>
+           <SalesTable/>
         </div>
     );
 };

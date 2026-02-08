@@ -1,5 +1,6 @@
 import {
     AlertTriangle,
+    BaggageClaim,
     BarChart3,
     Building2,
     DollarSign,
@@ -11,17 +12,18 @@ import {
     Truck,
     Zap
 } from "lucide-react";
-import {Branch, Product, SalesOrder} from "@/types";
+import {Branch, Product, SalesOrder, Supplier} from "@/types";
 
 export const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: Home, href: '/' },
-    { id: 'branches', label: 'Branches', icon: Building2, href: '/branches' },
-    { id: 'products', label: 'Products', icon: Package, href: '/products' },
-    { id: 'inventory', label: 'Inventory', icon: Layers, href: '/inventory' },
-    { id: 'sales', label: 'Sales', icon: ShoppingCart, href: '/sales' },
-    { id: 'purchases', label: 'Purchases', icon: Truck, href: '/purchases' },
-    { id: 'transactions', label: 'Transactions', icon: History, href: '/transactions' },
-    { id: 'reports', label: 'Reports', icon: BarChart3, href: '/reports' },
+    {id: 'dashboard', label: 'Dashboard', icon: Home, href: '/'},
+    {id: 'branches', label: 'Branches', icon: Building2, href: '/branches'},
+    {id: 'products', label: 'Products', icon: Package, href: '/products'},
+    {id: 'inventory', label: 'Inventory', icon: Layers, href: '/inventory'},
+    {id: 'sales', label: 'Sales', icon: ShoppingCart, href: '/sales'},
+    {id: 'suppliers', label: 'Suppliers', icon: BaggageClaim, href: '/suppliers'},
+    // { id: 'purchases', label: 'Purchases', icon: Truck, href: '/purchases' },
+    {id: 'transactions', label: 'Transactions', icon: History, href: '/transactions'},
+    {id: 'reports', label: 'Reports', icon: BarChart3, href: '/reports'},
 ]
 
 export const stats = [
@@ -29,28 +31,28 @@ export const stats = [
         title: 'Total Products',
         value: '1,248',
         icon: Package,
-        trend: { value: 12, isUp: true },
+        trend: {value: 12, isUp: true},
         color: 'bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400',
     },
     {
         title: 'Stock Value',
         value: '$124,580',
         icon: DollarSign,
-        trend: { value: 8, isUp: true },
+        trend: {value: 8, isUp: true},
         color: 'bg-green-100 dark:bg-green-950 text-green-600 dark:text-green-400',
     },
     {
         title: 'Low Stock Items',
         value: '34',
         icon: AlertTriangle,
-        trend: { value: 5, isUp: false },
+        trend: {value: 5, isUp: false},
         color: 'bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-400',
     },
     {
         title: "Today's Sales",
         value: '$8,420',
         icon: Zap,
-        trend: { value: 23, isUp: true },
+        trend: {value: 23, isUp: true},
         color: 'bg-purple-100 dark:bg-purple-950 text-purple-600 dark:text-purple-400',
     },
 ]
@@ -144,33 +146,131 @@ export const transactions = [
 
 
 export const initialBranches: Branch[] = [
-    { id: 1, name: 'Main Branch', location: 'New York, NY', status: 'Active', employees: 12, products: 450, revenue: '$125,450', orders: 342, growth: '+12.5%' },
-    { id: 2, name: 'Downtown Store', location: 'Los Angeles, CA', status: 'Active', employees: 8, products: 320, revenue: '$98,230', orders: 267, growth: '+8.3%' },
-    { id: 3, name: 'Airport Hub', location: 'Chicago, IL', status: 'Active', employees: 6, products: 280, revenue: '$76,890', orders: 189, growth: '+5.2%' },
-    { id: 4, name: 'Warehouse East', location: 'Miami, FL', status: 'Inactive', employees: 0, products: 0, revenue: '$0', orders: 0, growth: '0%' },
+    {
+        id: 1,
+        name: 'Main Branch',
+        location: 'New York, NY',
+        status: 'Active',
+        employees: 12,
+        products: 450,
+        revenue: '$125,450',
+        orders: 342,
+        growth: '+12.5%'
+    },
+    {
+        id: 2,
+        name: 'Downtown Store',
+        location: 'Los Angeles, CA',
+        status: 'Active',
+        employees: 8,
+        products: 320,
+        revenue: '$98,230',
+        orders: 267,
+        growth: '+8.3%'
+    },
+    {
+        id: 3,
+        name: 'Airport Hub',
+        location: 'Chicago, IL',
+        status: 'Active',
+        employees: 6,
+        products: 280,
+        revenue: '$76,890',
+        orders: 189,
+        growth: '+5.2%'
+    },
+    {
+        id: 4,
+        name: 'Warehouse East',
+        location: 'Miami, FL',
+        status: 'Inactive',
+        employees: 0,
+        products: 0,
+        revenue: '$0',
+        orders: 0,
+        growth: '0%'
+    },
 ]
 
-export  const initialProducts: Product[] = [
-    { id: 'SKU001', name: 'Wireless Mouse', category: 'Electronics', price: '$29.99', status: 'Active', stock: 145 },
-    { id: 'SKU002', name: 'USB-C Cable', category: 'Accessories', price: '$12.99', status: 'Active', stock: 320 },
-    { id: 'SKU003', name: 'Mechanical Keyboard', category: 'Electronics', price: '$79.99', status: 'Active', stock: 45 },
-    { id: 'SKU004', name: 'Monitor Stand', category: 'Furniture', price: '$45.00', status: 'Active', stock: 62 },
-    { id: 'SKU005', name: 'Desk Lamp', category: 'Lighting', price: '$34.99', status: 'Low Stock', stock: 8 },
+export const initialProducts: Product[] = [
+    {id: 'SKU001', name: 'Wireless Mouse', category: 'Electronics', price: '$29.99', status: 'Active', stock: 145},
+    {id: 'SKU002', name: 'USB-C Cable', category: 'Accessories', price: '$12.99', status: 'Active', stock: 320},
+    {id: 'SKU003', name: 'Mechanical Keyboard', category: 'Electronics', price: '$79.99', status: 'Active', stock: 45},
+    {id: 'SKU004', name: 'Monitor Stand', category: 'Furniture', price: '$45.00', status: 'Active', stock: 62},
+    {id: 'SKU005', name: 'Desk Lamp', category: 'Lighting', price: '$34.99', status: 'Low Stock', stock: 8},
 ]
 
 
 export const inventoryItems = [
-    { id: 1, product: 'Wireless Mouse', branch: 'Main Branch', quantity: 145, threshold: 50, status: 'Optimal' },
-    { id: 2, product: 'USB-C Cable', branch: 'Downtown Store', quantity: 320, threshold: 100, status: 'Optimal' },
-    { id: 3, product: 'Mechanical Keyboard', branch: 'Airport Hub', quantity: 45, threshold: 30, status: 'Low' },
-    { id: 4, product: 'Monitor Stand', branch: 'Main Branch', quantity: 8, threshold: 20, status: 'Critical' },
-    { id: 5, product: 'Desk Lamp', branch: 'Downtown Store', quantity: 120, threshold: 40, status: 'Optimal' },
+    {id: 1, product: 'Wireless Mouse', branch: 'Main Branch', quantity: 145, threshold: 50, status: 'Optimal'},
+    {id: 2, product: 'USB-C Cable', branch: 'Downtown Store', quantity: 320, threshold: 100, status: 'Optimal'},
+    {id: 3, product: 'Mechanical Keyboard', branch: 'Airport Hub', quantity: 45, threshold: 30, status: 'Low'},
+    {id: 4, product: 'Monitor Stand', branch: 'Main Branch', quantity: 8, threshold: 20, status: 'Critical'},
+    {id: 5, product: 'Desk Lamp', branch: 'Downtown Store', quantity: 120, threshold: 40, status: 'Optimal'},
 ]
 
 export const initialSalesOrders: SalesOrder[] = [
-    { id: 'SAL001', customer: 'Acme Corp', items: 5, total: '$450.00', date: '2024-01-28', status: 'Completed' },
-    { id: 'SAL002', customer: 'Tech Solutions', items: 12, total: '$1,290.00', date: '2024-01-27', status: 'Completed' },
-    { id: 'SAL003', customer: 'Global Retail', items: 8, total: '$720.00', date: '2024-01-27', status: 'Pending' },
-    { id: 'SAL004', customer: 'Store Network', items: 3, total: '$210.00', date: '2024-01-26', status: 'Completed' },
-    { id: 'SAL005', customer: 'Quick Shop', items: 15, total: '$1,620.00', date: '2024-01-26', status: 'Processing' },
+    {id: 'SAL001', customer: 'Acme Corp', items: 5, total: '$450.00', date: '2024-01-28', status: 'Completed'},
+    {id: 'SAL002', customer: 'Tech Solutions', items: 12, total: '$1,290.00', date: '2024-01-27', status: 'Completed'},
+    {id: 'SAL003', customer: 'Global Retail', items: 8, total: '$720.00', date: '2024-01-27', status: 'Pending'},
+    {id: 'SAL004', customer: 'Store Network', items: 3, total: '$210.00', date: '2024-01-26', status: 'Completed'},
+    {id: 'SAL005', customer: 'Quick Shop', items: 15, total: '$1,620.00', date: '2024-01-26', status: 'Processing'},
+]
+
+export const suppliers: Supplier[] = [
+    {
+        id: '1',
+        name: 'Wholesale Dist A',
+        email: 'info@wholesalea.com',
+        phone: '+1-800-123-4567',
+        location: 'New York, NY',
+        status: 'Active',
+        ordersCount: 45,
+        totalValue: '$125,450',
+        rating: 4.5
+    },
+    {
+        id: '2',
+        name: 'Import Co',
+        email: 'sales@importco.com',
+        phone: '+1-800-234-5678',
+        location: 'Los Angeles, CA',
+        status: 'Active',
+        ordersCount: 32,
+        totalValue: '$98,230',
+        rating: 4.2
+    },
+    {
+        id: '3',
+        name: 'Direct Supply',
+        email: 'contact@directsupply.com',
+        phone: '+1-800-345-6789',
+        location: 'Chicago, IL',
+        status: 'Active',
+        ordersCount: 28,
+        totalValue: '$76,890',
+        rating: 4.8
+    },
+    {
+        id: '4',
+        name: 'Bulk Vendor',
+        email: 'support@bulkvendor.com',
+        phone: '+1-800-456-7890',
+        location: 'Miami, FL',
+        status: 'Inactive',
+        ordersCount: 0,
+        totalValue: '$0',
+        rating: 3.9
+    },
+    {
+        id: '5',
+        name: 'Premium Goods',
+        email: 'team@premiumgoods.com',
+        phone: '+1-800-567-8901',
+        location: 'Seattle, WA',
+        status: 'Active',
+        ordersCount: 38,
+        totalValue: '$112,340',
+        rating: 4.7
+    },
 ]

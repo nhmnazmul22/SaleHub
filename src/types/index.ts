@@ -50,3 +50,15 @@ export interface SalesOrder {
     date: string
     status: string
 }
+
+export interface Supplier {
+    id: string
+    name: string
+    email: string
+    phone: string
+    location: string
+    status: 'Active' | 'Inactive'
+    ordersCount: number
+    totalValue: string
+    rating: number
+}
