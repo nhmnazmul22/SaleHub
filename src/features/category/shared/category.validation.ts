@@ -1,9 +1,10 @@
-import { Schema } from "mongoose";
+import { objectId } from "@/types";
 import { z } from "zod";
 
 export const categorySchemaType = z.object({
-  name: z.string("Category name required"),
-  parentId: z.instanceof(Schema.Types.ObjectId).optional(),
+  name: z.string().min(1, "Category name is required"),
+  parentId: objectId.optional(),
+  isActive: z.boolean().default(true),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
   deletedAt: z.date().optional(),
