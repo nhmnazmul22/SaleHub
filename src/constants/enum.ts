@@ -1,4 +1,4 @@
-import { RoleEnumType } from "@/types/enumType";
+import { RoleEnumType, VatDiscountType } from "@/types/enumType";
 
 export const RoleEnum: RoleEnumType[] = [
   "admin",
@@ -6,3 +6,5 @@ export const RoleEnum: RoleEnumType[] = [
   "staff",
   "customer",
 ];
+
+export const VatDiscountEnums: VatDiscountType[] = ["percent", "fixed"];

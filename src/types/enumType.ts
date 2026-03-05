@@ -4,3 +4,5 @@ export type RoleEnumType =
   | "branch_manager"
   | "staff"
   | "customer";
+
+export type VatDiscountType = "percent" | "fixed";
