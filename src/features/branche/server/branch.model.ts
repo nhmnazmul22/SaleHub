@@ -1,8 +1,8 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 
-const branchSchema = new mongoose.Schema(
+const branchSchema = new Schema(
   {
-    name: { type: String, required: true },
+    name: { type: String, required: true, unique: true },
     address: { type: String, required: true },
     phone: { type: String, required: false, default: null },
     email: { type: String, required: false, default: null },
@@ -16,6 +16,6 @@ const branchSchema = new mongoose.Schema(
   },
 );
 
-const BranchModel = new mongoose.Model("branches", branchSchema);
+const BranchModel = model("branches", branchSchema);
 
 export default BranchModel;

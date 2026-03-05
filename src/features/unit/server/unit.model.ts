@@ -1,9 +1,10 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 
-const unitSchema = new mongoose.Schema(
+const unitSchema = new Schema(
   {
     key: { type: String, required: true },
     value: { type: String, required: true },
+    isActive: { type: Boolean, default: true },
     deletedAt: { type: Date, default: null },
   },
   {
@@ -12,6 +13,8 @@ const unitSchema = new mongoose.Schema(
   },
 );
 
-const UnitModel = new mongoose.Model("units", unitSchema);
+unitSchema.index({ key: 1 }, { unique: true });
+
+const UnitModel = model("unit", unitSchema);
 
 export default UnitModel;

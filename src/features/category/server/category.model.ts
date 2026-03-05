@@ -1,9 +1,15 @@
-import mongoose, { Schema } from "mongoose";
+import { Schema, model } from "mongoose";
 
-const categorySchema = new mongoose.Schema(
+const categorySchema = new Schema(
   {
     name: { type: String, required: true },
-    parentId: { type: Schema.Types.ObjectId, ref: "categories", default: null },
+    parentId: {
+      type: Schema.Types.ObjectId,
+      index: true,
+      ref: "categories",
+      default: null,
+    },
+    isActive: { type: Boolean, default: true },
     deletedAt: { type: Date, default: null },
   },
   {
@@ -12,6 +18,6 @@ const categorySchema = new mongoose.Schema(
   },
 );
 
-const CategoryModel = new mongoose.Model("categories", categorySchema);
+const CategoryModel = model("categories", categorySchema);
 
 export default CategoryModel;

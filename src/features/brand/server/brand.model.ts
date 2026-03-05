@@ -1,9 +1,11 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
+import { boolean } from "zod";
 
-const brandSchema = new mongoose.Schema(
+const brandSchema = new Schema(
   {
     name: { type: String, required: true },
     shortName: { type: String, default: null },
+    isActive: { type: boolean, default: true },
     deletedAt: { type: Date, default: null },
   },
   {
@@ -12,6 +14,6 @@ const brandSchema = new mongoose.Schema(
   },
 );
 
-const BrandModel = new mongoose.Model("brands", brandSchema);
+const BrandModel = model("brands", brandSchema);
 
 export default BrandModel;
