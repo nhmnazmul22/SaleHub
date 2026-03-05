@@ -2,7 +2,7 @@ import { objectId } from "@/types";
 import { z } from "zod";
 
 export const categorySchemaType = z.object({
-  name: z.string().min(1, "Category name is required"),
+  name: z.string().trim().min(1, "Category name is required"),
   parentId: objectId.optional(),
   isActive: z.boolean().default(true),
   createdAt: z.date().optional(),

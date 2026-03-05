@@ -1,16 +1,16 @@
 import { RoleEnum } from "@/constants/enum";
-import { Schema } from "mongoose";
+import { objectId } from "@/types";
 import { z } from "zod";
 
 export const userSchemaType = z.object({
-  firstName: z.string("First name is required"),
-  lastName: z.string().optional(),
-  email: z.email(),
+  firstName: z.string().trim().min(1, "First name is required"),
+  lastName: z.string().trim().optional(),
+  email: z.email().trim(),
   password: z
     .string()
     .regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/),
-  role: z.enum(RoleEnum),
-  branchId: z.instanceof(Schema.Types.ObjectId),
+  role: z.enum(RoleEnum, "Invalid Role"),
+  branchId: objectId,
   isActive: z.boolean().default(true),
   lastLogin: z.date().nullable(),
   createdAt: z.date().optional(),
