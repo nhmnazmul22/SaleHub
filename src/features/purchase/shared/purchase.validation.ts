@@ -1,6 +1,6 @@
 import {z} from "zod";
 import {objectId} from "@/types";
-import {PurchaseStatusEnums} from "@/constants/enum";
+import {PurchaseStatusEnum} from "@/types/enumType";
 
 export const purchaseSchema = z.object({
     invoiceNumber: z.string().trim().min(1, "Invoice number is required"),
@@ -9,7 +9,7 @@ export const purchaseSchema = z.object({
     totalDiscount: z.number().optional(),
     totalVat: z.number().optional(),
     supplierId: objectId,
-    status: z.enum(PurchaseStatusEnums).optional(),
+    status: z.enum(Object.values(PurchaseStatusEnum)).optional(),
     purchaseDate: z.date().optional(),
     createdBy: objectId,
     createdAt: z.date().optional(),

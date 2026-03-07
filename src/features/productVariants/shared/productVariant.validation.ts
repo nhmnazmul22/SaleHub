@@ -1,6 +1,6 @@
 import {z} from "zod";
 import {objectId} from "@/types";
-import {VatDiscountEnums} from "@/constants/enum";
+import {VatDiscountEnumType} from "@/types/enumType";
 
 export const productVariantSchema = z.object({
     sku: z.string().trim().min(1, "SKU is required"),
@@ -11,10 +11,10 @@ export const productVariantSchema = z.object({
     lastUnitPrice: z.number().optional(),
     shippingAmount: z.number().optional(),
     discountEnabled: z.boolean().optional(),
-    discountType: z.enum(VatDiscountEnums).optional(),
+    discountType: z.enum(Object.values(VatDiscountEnumType)).optional(),
     discountAmount: z.number().optional(),
     vatEnabled: z.boolean().optional(),
-    vatType: z.enum(VatDiscountEnums).optional(),
+    vatType: z.enum(Object.values(VatDiscountEnumType)).optional(),
     vatAmount: z.number().optional(),
     createdBy: objectId,
     createdAt: z.date().optional(),

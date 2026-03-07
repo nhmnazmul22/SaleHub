@@ -1,5 +1,5 @@
 import {Schema, model} from "mongoose";
-import {PurchaseStatusEnums} from "@/constants/enum";
+import {PurchaseStatusEnum} from "@/types/enumType";
 
 const purchaseSchema = new Schema(
     {
@@ -32,7 +32,7 @@ const purchaseSchema = new Schema(
         },
         status: {
             type: String,
-            enum: PurchaseStatusEnums,
+            enum: Object.values(PurchaseStatusEnum),
             default: "ordered",
         },
         purchaseDate: {
