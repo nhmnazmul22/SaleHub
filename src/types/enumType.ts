@@ -22,3 +22,24 @@ export enum AdjustmentEnumType {
     TRANSFER_IN = "TRANSFER_IN",
     TRANSFER_OUT = "TRANSFER_OUT",
 }
+
+
+export enum SaleStatusEnumType {
+    DRAFT = "draft",
+    COMPLETED = "completed",
+    RETURNED = "returned",
+    CANCEL = "cancel",
+}
+
+export enum PaymentMethodEnumType {
+    CASH = "cash",
+    BANK = "bank",
+    ONLINE_BANKING = "online_banking",
+}
+
+export enum PaymentStatusEnumType {
+    PARTIAL = "partial",
+    PAID = "paid",
+    PENDING = "pending",
+    CANCELLED = "cancelled",
+}
