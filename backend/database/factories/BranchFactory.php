@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class BranchFactory extends Factory
 {
+    protected $model = Branch::class;
+
     /**
      * Define the model's default state.
      *
