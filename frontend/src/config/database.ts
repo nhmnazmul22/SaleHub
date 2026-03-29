@@ -1,45 +1,54 @@
-import mongoose, {Mongoose} from "mongoose";
+import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI
+const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
-    throw new Error(
-        'Please define the MONGODB_URI environment variable inside .env.local'
-    );
+  throw new Error(
+    "Please define the MONGODB_URI environment variable inside .env.local",
+  );
 }
 
-let cached = (global as any).mongoose;
+type MongooseCache = {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+};
 
-if (!cached) {
-    cached = (global as any).mongoose = {conn: null, promise: null};
+declare global {
+  var mongooseCache: MongooseCache | undefined;
 }
 
-export async function connectDB(): Promise<any> {
-    if (cached.conn) {
-        return cached.conn;
-    }
+const cached =
+  global.mongooseCache ??
+  (global.mongooseCache = { conn: null, promise: null });
 
-    if (!cached.promise) {
-        const opts = {
-            bufferCommands: false,
-            maxPoolSize: 10,
-            minPoolSize: 2,
-            serverSelectionTimeoutMS: 5000,
-            socketTimeoutMS: 45000,
-            family: 4
-        }
-
-        cached.promise = mongoose.connect(MONGODB_URI as string, opts)
-            .then((mongooseInstance) => {
-                console.log("✔ MongoDB connection successful")
-                return mongooseInstance;
-            }).catch((error) => {
-                console.error("MongoDB connection Error:", error);
-                cached.promise = null;
-                throw error;
-            })
-    }
-
-    cached.conn = await cached.promise;
+export async function connectDB(): Promise<typeof mongoose> {
+  if (cached.conn) {
     return cached.conn;
+  }
+
+  if (!cached.promise) {
+    const opts = {
+      bufferCommands: false,
+      maxPoolSize: 10,
+      minPoolSize: 2,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+      family: 4,
+    };
+
+    cached.promise = mongoose
+      .connect(MONGODB_URI as string, opts)
+      .then((mongooseInstance) => {
+        console.log("✔ MongoDB connection successful");
+        return mongooseInstance;
+      })
+      .catch((error) => {
+        console.error("MongoDB connection Error:", error);
+        cached.promise = null;
+        throw error;
+      });
+  }
+
+  cached.conn = await cached.promise;
+  return cached.conn;
 }
