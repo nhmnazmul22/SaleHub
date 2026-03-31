@@ -12,6 +12,8 @@ class Unit extends Model
 
     protected $table = 'units';
 
+    protected $primaryKey = 'unitId';
+
     protected $fillable = [
         'key',
         'value',
