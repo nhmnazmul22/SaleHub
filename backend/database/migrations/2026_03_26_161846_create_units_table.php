@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('units', function (Blueprint $table) {
-            $table->id();
+            $table->id('unitId');
             $table->string('key');
             $table->string('value');
             $table->boolean('isActive')->default(true);

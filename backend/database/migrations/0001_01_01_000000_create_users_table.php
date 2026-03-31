@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('firstName');
             $table->string('lastName');
-            $table->string('role');
+            $table->enum('role', ['admin', 'branch_manager', 'staff'])->default('staff');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

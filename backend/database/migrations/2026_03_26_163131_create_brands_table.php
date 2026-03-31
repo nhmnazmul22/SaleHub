@@ -11,13 +11,13 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('brands', function (Blueprint $table) {
-            $table->id();
+            $table->id('brandId');
             $table->string('name');
             $table->string('shortName')->nullable();
             $table->boolean('isActive')->default(true);
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
-            
+
         });
     }
 
