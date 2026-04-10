@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
   try {
     await connectDB();
     const body = await req.json();
+    console.log("userData", body);
     const validationResult = userSchemaType.safeParse(body);
 
     if (!validationResult.success) {

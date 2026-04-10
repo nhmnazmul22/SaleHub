@@ -9,11 +9,14 @@ export const userSchemaType = z
     email: z.email().trim(),
     password: z
       .string()
-      .regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/),
+      .regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/, {
+        message:
+          "Password must include uppercase, lowercase, number, special character, and be at least 8 characters long.",
+      }),
     role: z.enum(Object.values(RoleEnumType), "Invalid Role"),
-    branchId: objectId,
+    branchId: objectId.optional(),
     isActive: z.boolean().default(true),
-    lastLogin: z.date().nullable(),
+    lastLogin: z.date().nullable().optional(),
     createdAt: z.date().optional(),
     updatedAt: z.date().optional(),
     deletedAt: z.date().optional(),

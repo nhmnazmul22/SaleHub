@@ -1,4 +1,4 @@
-import mongoose, { Schema, model } from "mongoose";
+import { Schema, model, models } from "mongoose";
 import { RoleEnumType } from "@/types/enumType";
 
 const userSchema = new Schema(
@@ -37,6 +37,6 @@ const userSchema = new Schema(
   },
 );
 
-const UserModel = mongoose.model("users") || model("users", userSchema);
+const UserModel = models.users || model("users", userSchema);
 
 export default UserModel;
