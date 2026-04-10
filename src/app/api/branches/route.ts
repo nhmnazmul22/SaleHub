@@ -1,6 +1,6 @@
 import { connectDB } from "@/config/database";
 import ResponseStatus from "@/config/status";
-import BranchModel from "@/features/branche/server/branch.model";
+import BranchModel from "@/features/branch/server/branch.model";
 import { NextRequest, NextResponse } from "next/server";
 
 /**
