@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, models } from "mongoose";
 
 const unitSchema = new Schema(
   {
@@ -15,6 +15,6 @@ const unitSchema = new Schema(
 
 unitSchema.index({ key: 1 }, { unique: true });
 
-const UnitModel = model("unit", unitSchema);
+const UnitModel = models.unit || model("unit", unitSchema);
 
 export default UnitModel;

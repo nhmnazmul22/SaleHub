@@ -1,41 +1,41 @@
-import {Schema, model} from "mongoose";
+import { Schema, model, models } from "mongoose";
 
 const customerSchema = new Schema(
-    {
-        fullName: {
-            type: String,
-            required: true,
-            trim: true,
-        },
-        phone: {
-            type: String,
-            trim: true,
-        },
-        email: {
-            type: String,
-            trim: true,
-            unique: true,
-            sparse: true,
-            lowercase: true,
-        },
-        address: {
-            type: String,
-            trim: true,
-        },
-        createdBy: {
-            type: Schema.Types.ObjectId,
-            ref: "User",
-            required: true,
-        },
-        deletedAt: {
-            type: Date,
-            default: null,
-        },
+  {
+    fullName: {
+      type: String,
+      required: true,
+      trim: true,
     },
-    {
-        timestamps: true,
-        versionKey: false
-    }
+    phone: {
+      type: String,
+      trim: true,
+    },
+    email: {
+      type: String,
+      trim: true,
+      unique: true,
+      sparse: true,
+      lowercase: true,
+    },
+    address: {
+      type: String,
+      trim: true,
+    },
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    deletedAt: {
+      type: Date,
+      default: null,
+    },
+  },
+  {
+    timestamps: true,
+    versionKey: false,
+  },
 );
 
-export const Customer = model("customers", customerSchema);
+export const Customer = models.customers || model("customers", customerSchema);

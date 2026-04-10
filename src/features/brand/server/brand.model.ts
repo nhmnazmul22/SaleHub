@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, models } from "mongoose";
 import { boolean } from "zod";
 
 const brandSchema = new Schema(
@@ -14,6 +14,6 @@ const brandSchema = new Schema(
   },
 );
 
-const BrandModel = model("brands", brandSchema);
+const BrandModel = models.brands ||  model("brands", brandSchema);
 
 export default BrandModel;

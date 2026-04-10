@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, models } from "mongoose";
 
 const categorySchema = new Schema(
   {
@@ -18,6 +18,6 @@ const categorySchema = new Schema(
   },
 );
 
-const CategoryModel = model("categories", categorySchema);
+const CategoryModel = models.categories || model("categories", categorySchema);
 
 export default CategoryModel;

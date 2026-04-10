@@ -1,4 +1,4 @@
-import {Schema, model} from "mongoose";
+import {Schema, model, models} from "mongoose";
 
 const supplierSchema = new Schema(
     {
@@ -67,6 +67,6 @@ const supplierSchema = new Schema(
     }
 );
 
-const SupplierModel = model("suppliers", supplierSchema);
+const SupplierModel = models.suppliers || model("suppliers", supplierSchema);
 
 export default SupplierModel;

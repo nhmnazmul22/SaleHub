@@ -1,4 +1,4 @@
-import {model, Schema} from "mongoose";
+import {model, models, Schema} from "mongoose";
 import {PaymentMethodEnumType, PaymentStatusEnumType} from "@/types/enumType";
 
 
@@ -59,4 +59,4 @@ const paymentSchema = new Schema(
 paymentSchema.index({saleId: 1});
 paymentSchema.index({customerId: 1});
 
-export const PaymentModel = model("payments", paymentSchema);
+export const PaymentModel = models.payments || model("payments", paymentSchema);
