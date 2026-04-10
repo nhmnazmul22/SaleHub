@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, models } from "mongoose";
 
 const branchSchema = new Schema(
   {
@@ -16,6 +16,6 @@ const branchSchema = new Schema(
   },
 );
 
-const BranchModel = model("branches", branchSchema);
+const BranchModel = models.branches || model("branches", branchSchema);
 
 export default BranchModel;
