@@ -27,3 +27,4 @@ export const branchUpdateSchema = z
   });
 
 export type BranchType = z.infer<typeof branchSchemaType>;
+export type BranchUpdateType = z.infer<typeof branchUpdateSchema>;
