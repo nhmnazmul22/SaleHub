@@ -12,4 +12,18 @@ export const branchSchemaType = z.object({
   deletedAt: z.date().optional(),
 });
 
+export const branchUpdateSchema = z
+  .object({
+    name: z.string().trim().optional(),
+    address: z.string().trim().optional(),
+    phone: z.string().trim().optional(),
+    email: z.email().trim().optional(),
+    contactPerson: z.string().trim().optional(),
+    isActive: z.boolean().optional(),
+  })
+  .refine((data) => Object.values(data).some((value) => value !== undefined), {
+    error: "At least one field must be provide for update",
+    abort: true,
+  });
+
 export type BranchType = z.infer<typeof branchSchemaType>;
