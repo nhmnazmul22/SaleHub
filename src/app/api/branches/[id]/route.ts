@@ -1,9 +1,17 @@
-import { updateBranch } from "@/features/branch/server/branch.controller";
+import * as BranchController from "@/features/branch/server/branch.controller";
 import { NextRequest } from "next/server";
 
 export async function PATCH(
   req: NextRequest,
   ctx: RouteContext<"/api/branches/[id]">,
 ) {
-  return updateBranch(req, ctx);
+  return BranchController.updateBranch(req, ctx);
+}
+
+
+export async function DELETE(
+  req: NextRequest,
+  ctx: RouteContext<"/api/branches/[id]">,
+){
+  return BranchController.deleteBranch(req, ctx)
 }

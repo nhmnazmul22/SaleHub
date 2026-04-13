@@ -58,3 +58,25 @@ export const updateBranch = async (
     return handleError(error);
   }
 };
+
+export const deleteBranch = async (
+  req: NextRequest,
+  ctx: RouteContext<"/api/branches/[id]">,
+) => {
+  try {
+    const { id: branchId } = await ctx.params;
+
+    const deletedBranch = await BranchService.deleteBranch(branchId);
+
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Branch updated successful",
+        data: deletedBranch,
+      },
+      { status: ResponseStatus.NO_CONTENT },
+    );
+  } catch (error) {
+    return handleError(error);
+  }
+};

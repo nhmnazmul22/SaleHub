@@ -17,10 +17,9 @@ export const findById = async (
   return await BranchModel.findOne({ _id: new Schema.ObjectId(id) });
 };
 
-
-export const createOne = async (data: BranchType): Promise<BranchType>  =>{
- return await BranchModel.create(data);
-}
+export const createOne = async (data: BranchType): Promise<BranchType> => {
+  return await BranchModel.create(data);
+};
 
 export const updateById = async (
   id: string,
@@ -30,4 +29,8 @@ export const updateById = async (
     { _id: new Schema.ObjectId(id) },
     { $set: data },
   );
+};
+
+export const deleteById = async (id: string) => {
+  return await BranchModel.deleteOne({ _id: new Schema.ObjectId(id) });
 };

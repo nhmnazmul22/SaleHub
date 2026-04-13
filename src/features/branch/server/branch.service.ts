@@ -56,9 +56,24 @@ export const updateBranch = async (
   const existBranch = await BranchRepository.findById(branchId);
 
   if (!existBranch) {
-    throw new NotFoundError("Branch not found");
+    throw new NotFoundError(`Branch not found with id: ${branchId}`);
   }
 
   // update
   return await BranchRepository.updateById(branchId, body);
+};
+
+export const deleteBranch = async (branchId: string) => {
+  await connectDB();
+
+  if (!branchId) {
+    throw new NotFoundError("Please, provide a branch id for delete branch!");
+  }
+
+  const existBranch = await BranchRepository.findById(branchId);
+  if (!existBranch) {
+    throw new NotFoundError(`Branch not found with id: ${branchId}`);
+  }
+
+  return await BranchRepository.deleteById(branchId);
 };
