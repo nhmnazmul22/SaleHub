@@ -6,11 +6,31 @@ import { handleError } from "@/helper/error.helper";
 export const getBranches = async () => {
   try {
     const result = await BranchService.getAllBranch();
-    return NextResponse.json({
-      success: true,
-      message: "Branches retrieved successful",
-      data: result,
-    }, {status: ResponseStatus.SUCCESS});
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Branches retrieved successful",
+        data: result,
+      },
+      { status: ResponseStatus.SUCCESS },
+    );
+  } catch (error) {
+    return handleError(error);
+  }
+};
+
+export const createBranch = async (req: NextRequest) => {
+  try {
+    const body = await req.json();
+    const branch = await BranchService.createBranch(body);
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Branch create successful",
+        data: branch,
+      },
+      { status: ResponseStatus.CREATED },
+    );
   } catch (error) {
     return handleError(error);
   }

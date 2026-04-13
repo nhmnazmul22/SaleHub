@@ -5,8 +5,8 @@ import {
 } from "@/features/branch/shared/branch.validation";
 import BranchModel from "@/features/branch/server/branch.model";
 
-export const findAll = async (
-  query?: Record<keyof BranchType, string>,
+export const findByQuery = async (
+  query?: Record<string, string>,
 ): Promise<BranchType[] | []> => {
   return await BranchModel.find(query);
 };
@@ -16,6 +16,11 @@ export const findById = async (
 ): Promise<BranchUpdateType | null> => {
   return await BranchModel.findOne({ _id: new Schema.ObjectId(id) });
 };
+
+
+export const createOne = async (data: BranchType): Promise<BranchType>  =>{
+ return await BranchModel.create(data);
+}
 
 export const updateById = async (
   id: string,
