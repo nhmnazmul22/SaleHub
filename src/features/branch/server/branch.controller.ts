@@ -10,7 +10,7 @@ export const getBranches = async () => {
       success: true,
       message: "Branches retrieved successful",
       data: result,
-    });
+    }, {status: ResponseStatus.SUCCESS});
   } catch (error) {
     return handleError(error);
   }
