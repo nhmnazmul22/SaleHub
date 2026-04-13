@@ -3,10 +3,23 @@ import * as BranchService from "@/features/branch/server/branch.service";
 import ResponseStatus from "@/config/status";
 import { handleError } from "@/helper/error.helper";
 
-export async function updateBranch(
+export const getBranches = async () => {
+  try {
+    const result = await BranchService.getAllBranch();
+    return NextResponse.json({
+      success: true,
+      message: "Branches retrieved successful",
+      data: result,
+    });
+  } catch (error) {
+    return handleError(error);
+  }
+};
+
+export const updateBranch = async (
   req: NextRequest,
   ctx: RouteContext<"/api/branches/[id]">,
-) {
+) => {
   try {
     const { id } = await ctx.params;
     const body = await req.json();
@@ -24,4 +37,4 @@ export async function updateBranch(
   } catch (error) {
     return handleError(error);
   }
-}
+};

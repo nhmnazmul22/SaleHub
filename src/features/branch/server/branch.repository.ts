@@ -1,6 +1,15 @@
 import { Schema, UpdateWriteOpResult } from "mongoose";
-import { BranchUpdateType } from "@/features/branch/shared/branch.validation";
+import {
+  BranchType,
+  BranchUpdateType,
+} from "@/features/branch/shared/branch.validation";
 import BranchModel from "@/features/branch/server/branch.model";
+
+export const findAll = async (
+  query?: Record<keyof BranchType, string>,
+): Promise<BranchType[] | []> => {
+  return await BranchModel.find(query);
+};
 
 export const findById = async (
   id: string,
