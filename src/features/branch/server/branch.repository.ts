@@ -5,10 +5,16 @@ import {
 } from "@/features/branch/shared/branch.validation";
 import BranchModel from "@/features/branch/server/branch.model";
 
-export const findByQuery = async (
+export const findAll = async (
   query?: Record<string, string>,
 ): Promise<BranchType[] | []> => {
   return await BranchModel.find(query);
+};
+
+export const findOneByQuery = async (
+  query?: Record<string, string>,
+): Promise<BranchType | null> => {
+  return await BranchModel.findOne(query);
 };
 
 export const findById = async (

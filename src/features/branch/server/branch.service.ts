@@ -11,7 +11,7 @@ import * as BranchRepository from "./branch.repository";
 
 export const getAllBranch = async (): Promise<BranchType[] | []> => {
   await connectDB();
-  const branches = await BranchRepository.findByQuery();
+  const branches = await BranchRepository.findAll();
   return branches;
 };
 
@@ -26,7 +26,7 @@ export const createBranch = async (data: BranchType): Promise<BranchType> => {
   const payload = validationResult.data;
 
   // Checking branch exist or not
-  const existBranch = await BranchRepository.findByQuery({
+  const existBranch = await BranchRepository.findOneByQuery({
     name: payload.name,
   });
 
