@@ -8,6 +8,7 @@ import {
 import { ValidationError } from "@/shared/errors/ValidationError";
 import { NotFoundError } from "@/shared/errors/NotfoundError";
 import * as BranchRepository from "./branch.repository";
+import { BusinessError } from "@/shared/errors/BusinessError";
 
 export const getAllBranch = async (): Promise<BranchType[] | []> => {
   await connectDB();
@@ -31,7 +32,7 @@ export const createBranch = async (data: BranchType): Promise<BranchType> => {
   });
 
   if (existBranch) {
-    throw new NotFoundError(
+    throw new BusinessError(
       `${payload.name} already exist. Try with another name.`,
     );
   }

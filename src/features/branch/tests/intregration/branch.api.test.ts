@@ -6,58 +6,88 @@ import { NextRequest } from "next/server";
  * @Test Admin can get all branch
  */
 describe("Branch Feature Test: /api/branches", () => {
-  it("Should return all branches", async () => {
-    // Arrange
-    await BranchModel.create([
-      { name: "Main Branch", address: "Dhaka", isActive: true },
-      { name: "Second Branch", address: "CTG", isActive: true },
-    ]);
+   it("Should return all branches", async () => {
+     // Arrange
+     await BranchModel.create([
+       { name: "Main Branch", address: "Dhaka", isActive: true },
+       { name: "Second Branch", address: "CTG", isActive: true },
+     ]);
 
-    // Act
-    const res = await GET();
-    const data = await res.json();
+     // Act
+     const res = await GET();
+     const data = await res.json();
 
-    // Assert
-    expect(res.status).toBe(200);
-    expect(data.success).toBe(true);
-    expect(Array.isArray(data.data)).toBe(true);
-  });
+     // Assert
+     expect(res.status).toBe(200);
+     expect(data.success).toBe(true);
+     expect(Array.isArray(data.data)).toBe(true);
+   });
 
-  it("Can create a new branch", async () => {
-    // Arrange
-    const payload = {
-      name: "Rajsahi Branch",
-      address: "Rajsahi, Bangladesh",
-      phone: "01604017164",
-      email: "branch.cumilla@example.com",
-      contactPerson: "Md. Maleh",
-    };
+  describe("Admin can create branch with validation", async () => {
+    it("Can create a new branch", async () => {
+      // Arrange
+      const payload = {
+        name: "Rajsahi Branch",
+        address: "Rajsahi, Bangladesh",
+        phone: "01604017164",
+        email: "branch.cumilla@example.com",
+        contactPerson: "Md. Maleh",
+      };
 
-    // Act
-    const req = new Request(`${process.env.BASE_URL}/branches`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-    const res = await POST(req as NextRequest);
-    const data = await res.json();
+      // Act
+      const req = new Request(`http://test/branches`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      const res = await POST(req as NextRequest);
+      const data = await res.json();
 
-    // Assert
-    expect(res.status).toBe(201);
-    expect(data.success).toBe(true);
-    expect(data.data.name).toBe(payload.name);
-  });
-
-  it("should fail when name is missing", async () => {
-    const req = new Request("http://test/branches", {
-      method: "POST",
-      body: JSON.stringify({}),
+      // Assert
+      expect(res.status).toBe(201);
+      expect(data.success).toBe(true);
+      expect(data.data.name).toBe(payload.name);
     });
 
-    const res = await POST(req as NextRequest);
+    it("should fail when name is missing", async () => {
+      const req = new Request("http://test/branches", {
+        method: "POST",
+        body: JSON.stringify({}),
+      });
 
-    expect(res.status).toBe(422);
+      const res = await POST(req as NextRequest);
+
+      expect(res.status).toBe(422);
+    });
+
+    it("should return branch existing error", async () => {
+      // Arrange
+      const payload = {
+        name: "Exist Branch",
+        address: "Dhaka",
+        isActive: true,
+      };
+      await BranchModel.create(payload);
+      // Act
+      const req = new Request("http://test/branches", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const res = await POST(req as NextRequest);
+      const data = await res.json();
+
+      // Assert
+      expect(res.status).toBe(400);
+      expect(data.success).toBe(false);
+    });
   });
+
+  describe("")
+
 });
