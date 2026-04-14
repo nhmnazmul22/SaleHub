@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { PATCH } from "@/app/api/branches/[id]/route";
 import { GET, POST } from "@/app/api/branches/route";
 import BranchModel from "@/features/branch/server/branch.model";
 import { NextRequest } from "next/server";
@@ -6,24 +8,24 @@ import { NextRequest } from "next/server";
  * @Test Admin can get all branch
  */
 describe("Branch Feature Test: /api/branches", () => {
-   it("Should return all branches", async () => {
-     // Arrange
-     await BranchModel.create([
-       { name: "Main Branch", address: "Dhaka", isActive: true },
-       { name: "Second Branch", address: "CTG", isActive: true },
-     ]);
+  it("Should return all branches", async () => {
+    // Arrange
+    await BranchModel.create([
+      { name: "Main Branch", address: "Dhaka", isActive: true },
+      { name: "Second Branch", address: "CTG", isActive: true },
+    ]);
 
-     // Act
-     const res = await GET();
-     const data = await res.json();
+    // Act
+    const res = await GET();
+    const data = await res.json();
 
-     // Assert
-     expect(res.status).toBe(200);
-     expect(data.success).toBe(true);
-     expect(Array.isArray(data.data)).toBe(true);
-   });
+    // Assert
+    expect(res.status).toBe(200);
+    expect(data.success).toBe(true);
+    expect(Array.isArray(data.data)).toBe(true);
+  });
 
-  describe("Admin can create branch with validation", async () => {
+  describe("Can create branch with validation", async () => {
     it("Can create a new branch", async () => {
       // Arrange
       const payload = {
@@ -88,6 +90,91 @@ describe("Branch Feature Test: /api/branches", () => {
     });
   });
 
-  describe("")
+  describe("Can update branch with validation", async () => {
+    it("can update existing branch", async () => {
+      // Arrange
+      const existBranch = await BranchModel.create({
+        name: "Exist Branch",
+        address: "Dhaka",
+        isActive: true,
+      });
+      const updatePayload = { name: "updated Branch", address: "Rajshahi" };
+      // Act
+      const req = new Request("http://test/branches", {
+        method: "PATCH",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(updatePayload),
+      });
+      const res = await PATCH(
+        req as NextRequest,
+        {
+          params: { id: existBranch._id.toString() },
+        } as any,
+      );
+      const data = await res.json();
 
+
+      // Assert
+      expect(res.status).toBe(202);
+      expect(data.success).toBe(true);
+      expect(data.data.acknowledged).toBe(true);
+      expect(data.data.modifiedCount).toBe(1);
+    });
+
+    it("Should give NotFoundError when branch not found", async () => {
+      // Arrange
+      await BranchModel.create({
+        name: "Exist Branch",
+        address: "Dhaka",
+        isActive: true,
+      });
+      const updatePayload = { name: "updated Branch", address: "Rajshahi" };
+      // Act
+      const req = new Request("http://test/branches", {
+        method: "PATCH",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(updatePayload),
+      });
+      const res = await PATCH(
+        req as NextRequest,
+        {
+          params: { id: "69d92be11d73ad9c03c58f68" },
+        } as any,
+      );
+      const data = await res.json();
+
+      // Assert
+      expect(res.status).toBe(404);
+      expect(data.success).toBe(false);
+    });
+
+    it("Should give BusinessError found error when branch not found", async () => {
+      // Arrange
+      const updatePayload = { name: "updated Branch", address: "Rajshahi" };
+      // Act
+      const req = new Request("http://test/branches", {
+        method: "PATCH",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(updatePayload),
+      });
+      const res = await PATCH(
+        req as NextRequest,
+        {
+          params: { id: "10" },
+        } as any,
+      );
+      const data = await res.json();
+
+      // Assert
+      expect(res.status).toBe(400);
+      expect(data.success).toBe(false);
+    });
+
+  });
 });

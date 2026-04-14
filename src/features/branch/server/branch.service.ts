@@ -9,6 +9,7 @@ import { ValidationError } from "@/shared/errors/ValidationError";
 import { NotFoundError } from "@/shared/errors/NotfoundError";
 import * as BranchRepository from "./branch.repository";
 import { BusinessError } from "@/shared/errors/BusinessError";
+import mongoose from "mongoose";
 
 export const getAllBranch = async (): Promise<BranchType[] | []> => {
   await connectDB();
@@ -44,7 +45,11 @@ export const updateBranch = async (
   branchId: string,
   body: BranchUpdateType,
 ) => {
-  await connectDB();
+  if (!mongoose.Types.ObjectId.isValid(branchId)) {
+    throw new BusinessError(
+      "Please, provide valid branch id for delete branch!",
+    );
+  }
 
   // validation
   const validationResult = branchUpdateSchema.safeParse(body);
@@ -54,6 +59,8 @@ export const updateBranch = async (
   }
 
   // check existence
+  await connectDB();
+  
   const existBranch = await BranchRepository.findById(branchId);
 
   if (!existBranch) {
@@ -65,11 +72,13 @@ export const updateBranch = async (
 };
 
 export const deleteBranch = async (branchId: string) => {
-  await connectDB();
-
-  if (!branchId) {
-    throw new NotFoundError("Please, provide a branch id for delete branch!");
+  if (!mongoose.Types.ObjectId.isValid(branchId)) {
+    throw new BusinessError(
+      "Please, provide valid branch id for delete branch!",
+    );
   }
+
+  await connectDB();
 
   const existBranch = await BranchRepository.findById(branchId);
   if (!existBranch) {

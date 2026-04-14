@@ -1,9 +1,10 @@
-import { Schema, UpdateWriteOpResult } from "mongoose";
+import { UpdateWriteOpResult } from "mongoose";
 import {
   BranchType,
   BranchUpdateType,
 } from "@/features/branch/shared/branch.validation";
 import BranchModel from "@/features/branch/server/branch.model";
+import { Types } from "mongoose";
 
 export const findAll = async (
   query?: Record<string, string>,
@@ -20,7 +21,7 @@ export const findOneByQuery = async (
 export const findById = async (
   id: string,
 ): Promise<BranchUpdateType | null> => {
-  return await BranchModel.findOne({ _id: new Schema.ObjectId(id) });
+  return await BranchModel.findOne({ _id: new Types.ObjectId(id) });
 };
 
 export const createOne = async (data: BranchType): Promise<BranchType> => {
@@ -32,11 +33,11 @@ export const updateById = async (
   data: BranchUpdateType,
 ): Promise<UpdateWriteOpResult> => {
   return await BranchModel.updateOne(
-    { _id: new Schema.ObjectId(id) },
+    { _id: new Types.ObjectId(id) },
     { $set: data },
   );
 };
 
 export const deleteById = async (id: string) => {
-  return await BranchModel.deleteOne({ _id: new Schema.ObjectId(id) });
+  return await BranchModel.deleteOne({ _id: new Types.ObjectId(id) });
 };

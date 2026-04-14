@@ -18,6 +18,7 @@ export function handleError(error: any) {
     {
       success: false,
       message: "Internal server error",
+      error: error?.toString(),
     },
     { status: 500 },
   );
