@@ -1,3 +1,4 @@
+import { softDeletePlugin } from "@/lib/softDelete.plugin";
 import { Schema, model, models } from "mongoose";
 
 const branchSchema = new Schema(
@@ -15,6 +16,8 @@ const branchSchema = new Schema(
     versionKey: false,
   },
 );
+
+branchSchema.plugin(softDeletePlugin);
 
 const BranchModel = models.branches || model("branches", branchSchema);
 
