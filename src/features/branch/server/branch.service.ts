@@ -4,10 +4,10 @@ import {
   BranchUpdateType,
   branchSchemaType,
   branchUpdateSchema,
-} from "../shared/branch.validation";
+} from "@/features/branch/shared/branch.validation";
 import { ValidationError } from "@/shared/errors/ValidationError";
 import { NotFoundError } from "@/shared/errors/NotfoundError";
-import * as BranchRepository from "./branch.repository";
+import * as BranchRepository from "@/features/branch/server/branch.repository";
 import { BusinessError } from "@/shared/errors/BusinessError";
 import mongoose from "mongoose";
 
@@ -60,7 +60,7 @@ export const updateBranch = async (
 
   // check existence
   await connectDB();
-  
+
   const existBranch = await BranchRepository.findById(branchId);
 
   if (!existBranch) {
@@ -86,4 +86,21 @@ export const deleteBranch = async (branchId: string) => {
   }
 
   return await BranchRepository.deleteById(branchId);
+};
+
+export const getBranch = async (branchId: string) => {
+  if (!mongoose.Types.ObjectId.isValid(branchId)) {
+    throw new BusinessError(
+      "Please, provide valid branch id to get branch info!",
+    );
+  }
+
+  await connectDB();
+
+  const existBranch = await BranchRepository.findById(branchId);
+  if (!existBranch) {
+    throw new NotFoundError(`Branch not found with id: ${branchId}`);
+  }
+
+  return existBranch;
 };

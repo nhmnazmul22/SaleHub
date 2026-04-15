@@ -20,6 +20,7 @@ export const branchUpdateSchema = z
     email: z.email().trim().optional(),
     contactPerson: z.string().trim().optional(),
     isActive: z.boolean().optional(),
+    deletedAt: z.date().optional(),
   })
   .refine((data) => Object.values(data).some((value) => value !== undefined), {
     error: "At least one field must be provide for update",
