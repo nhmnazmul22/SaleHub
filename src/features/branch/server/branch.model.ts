@@ -1,4 +1,4 @@
-import { softDeletePlugin } from "@/lib/softDelete.plugin";
+import { softDeletePlugin } from "@/plugin/softDelete.plugin";
 import { Schema, model, models } from "mongoose";
 
 const branchSchema = new Schema(
