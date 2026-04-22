@@ -1,6 +1,9 @@
 import UserModel from "@/features/user/server/user.model";
-import { UserType } from "@/features/user/shared/user.validation";
-import { Types } from "mongoose";
+import {
+  UserType,
+  UserUpdateType,
+} from "@/features/user/shared/user.validation";
+import { Types, UpdateWriteOpResult } from "mongoose";
 
 export const findAll = async (
   query?: Record<string, string>,
@@ -14,12 +17,24 @@ export const findOneByQuery = async (
   return await UserModel.findOne(query);
 };
 
-export const findById = async (
-  id: string,
-): Promise<UserType | null> => {
+export const findById = async (id: string): Promise<UserType | null> => {
   return await UserModel.findOne({ _id: new Types.ObjectId(id) });
 };
 
 export const createOne = async (data: UserType): Promise<UserType> => {
   return await UserModel.create(data);
+};
+
+export const updateById = async (
+  id: string,
+  data: UserUpdateType,
+): Promise<UpdateWriteOpResult> => {
+  return await UserModel.updateOne(
+    { _id: new Types.ObjectId(id) },
+    { $set: data },
+  );
+};
+
+export const deleteById = async (id: string) => {
+  return await UserModel.deleteOne({ _id: new Types.ObjectId(id) });
 };

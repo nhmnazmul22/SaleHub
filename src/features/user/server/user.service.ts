@@ -1,8 +1,10 @@
 import { connectDB } from "@/config/database";
 import * as UserRepository from "@/features/user/server/user.repository";
-import { UserType } from "../shared/user.validation";
+import { UserType, UserUpdateType } from "../shared/user.validation";
 import { BusinessError } from "@/shared/errors/BusinessError";
 import ResponseStatus from "@/config/status";
+import mongoose from "mongoose";
+import { NotFoundError } from "@/shared/errors/NotfoundError";
 
 export const getAllUsers = async () => {
   await connectDB();
@@ -30,4 +32,61 @@ export const createUser = async (payload: UserType) => {
   }
 
   return newUser;
+};
+
+
+export const updateUser = async (
+  userId: string,
+  body: UserUpdateType,
+) => {
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    throw new BusinessError(
+      "Please, provide valid user id for update user!",
+    );
+  }
+  // check existence
+  await connectDB();
+
+  const existUser = await UserRepository.findById(userId);
+
+  if (!existUser) {
+    throw new NotFoundError(`User not found with id: ${userId}`);
+  }
+
+  // update
+  return await UserRepository.updateById(userId, body);
+};
+
+export const deleteUser = async (userId: string) => {
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    throw new BusinessError(
+      "Please, provide valid user id for delete user!",
+    );
+  }
+
+  await connectDB();
+
+  const existUser = await UserRepository.findById(userId);
+  if (!existUser) {
+    throw new NotFoundError(`User not found with id: ${userId}`);
+  }
+
+  return await UserRepository.deleteById(userId);
+};
+
+export const getUser = async (userId: string) => {
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    throw new BusinessError(
+      "Please, provide valid user id to get user info!",
+    );
+  }
+
+  await connectDB();
+
+  const existUser = await UserRepository.findById(userId);
+  if (!existUser) {
+    throw new NotFoundError(`User not found with id: ${userId}`);
+  }
+
+  return existUser;
 };

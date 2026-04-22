@@ -32,4 +32,15 @@ export const userSchemaType = z
     }
   });
 
+export const userUpdateSchemaType = z.object({
+  firstName: z.string().trim().optional(),
+  lastName: z.string().trim().optional(),
+  email: z.email().trim(),
+  role: z.enum(Object.values(RoleEnumType), "Invalid Role"),
+  branchId: objectId.optional(),
+  isActive: z.boolean().default(true),
+  updatedAt: z.date().optional(),
+});
+
 export type UserType = z.infer<typeof userSchemaType>;
+export type UserUpdateType = z.infer<typeof userUpdateSchemaType>;
