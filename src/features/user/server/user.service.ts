@@ -16,33 +16,30 @@ export const createUser = async (payload: UserType) => {
   await connectDB();
 
   // Checking if the email already exists
-  const existingUser = await UserRepository.findOneByQuery({
+  const existingUser: UserType | null = await UserRepository.findOneByQuery({
     email: payload.email,
   });
 
   if (existingUser) {
-    throw new BusinessError("User already exists with this email");
+    throw new BusinessError("User already exists with this email or role");
   }
 
   // If validation is successful and email is unique, create the user
   const newUser = await UserRepository.createOne(payload);
 
   if (!newUser) {
-    throw new BusinessError("Failed to create user", ResponseStatus.INTERNAL_SERVER_ERROR);
+    throw new BusinessError(
+      "Failed to create user",
+      ResponseStatus.INTERNAL_SERVER_ERROR,
+    );
   }
 
   return newUser;
 };
 
-
-export const updateUser = async (
-  userId: string,
-  body: UserUpdateType,
-) => {
+export const updateUser = async (userId: string, body: UserUpdateType) => {
   if (!mongoose.Types.ObjectId.isValid(userId)) {
-    throw new BusinessError(
-      "Please, provide valid user id for update user!",
-    );
+    throw new BusinessError("Please, provide valid user id for update user!");
   }
   // check existence
   await connectDB();
@@ -59,9 +56,7 @@ export const updateUser = async (
 
 export const deleteUser = async (userId: string) => {
   if (!mongoose.Types.ObjectId.isValid(userId)) {
-    throw new BusinessError(
-      "Please, provide valid user id for delete user!",
-    );
+    throw new BusinessError("Please, provide valid user id for delete user!");
   }
 
   await connectDB();
@@ -76,9 +71,7 @@ export const deleteUser = async (userId: string) => {
 
 export const getUser = async (userId: string) => {
   if (!mongoose.Types.ObjectId.isValid(userId)) {
-    throw new BusinessError(
-      "Please, provide valid user id to get user info!",
-    );
+    throw new BusinessError("Please, provide valid user id to get user info!");
   }
 
   await connectDB();
