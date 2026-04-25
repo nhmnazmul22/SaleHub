@@ -14,11 +14,11 @@ export const findAll = async (
 export const findOneByQuery = async (
   query?: Record<string, string>,
 ): Promise<UserType | null> => {
-  return await UserModel.findOne(query);
+  return UserModel.findOne(query);
 };
 
 export const findById = async (id: string): Promise<UserType | null> => {
-  return await UserModel.findOne({ _id: new Types.ObjectId(id) });
+  return UserModel.findOne({_id: new Types.ObjectId(id)});
 };
 
 export const createOne = async (data: UserType): Promise<UserType> => {
@@ -29,12 +29,12 @@ export const updateById = async (
   id: string,
   data: UserUpdateType,
 ): Promise<UpdateWriteOpResult> => {
-  return await UserModel.updateOne(
-    { _id: new Types.ObjectId(id) },
-    { $set: data },
+  return UserModel.updateOne(
+      {_id: new Types.ObjectId(id)},
+      {$set: data},
   );
 };
 
 export const deleteById = async (id: string) => {
-  return await UserModel.deleteOne({ _id: new Types.ObjectId(id) });
+  return UserModel.deleteOne({_id: new Types.ObjectId(id)});
 };

@@ -4,6 +4,7 @@ import { RoleEnumType } from "@/types/enumType";
 
 export const userSchemaType = z
   .object({
+      _id: z.string().optional(),
     firstName: z.string().trim().min(1, "First name is required"),
     lastName: z.string().trim().optional(),
     email: z.email().trim(),
