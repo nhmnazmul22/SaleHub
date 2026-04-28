@@ -10,7 +10,8 @@ export const forgotPasswordValidation = z.object({
 });
 
 export const otpValidation = z.object({
-    otp: z.string().trim().min(1, "OTP is required"),
+    email: z.email().trim(),
+    otp: z.number().min(1, "OTP is required"),
 });
 
 export type LoginType = z.infer<typeof loginValidation>;

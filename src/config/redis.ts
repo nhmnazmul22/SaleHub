@@ -1,9 +1,9 @@
 import {createClient} from "redis";
 
-export const client = createClient({
+export const redisClient = createClient({
     url: process.env.REDIS_URL
 });
 
-client.on('error', (err) => console.log('Redis Error', err))
+redisClient.on('error', (err) => console.log('Redis Error', err))
 
-await client.connect();
+await redisClient.connect();

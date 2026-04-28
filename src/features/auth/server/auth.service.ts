@@ -7,6 +7,7 @@ import bcrypt from "bcrypt";
 import ResponseStatus from "@/config/status";
 import jwt from "jsonwebtoken";
 import sendMail from "@/lib/sendMail";
+import {redisClient} from "@/config/redis";
 
 export const loginService = async (loginInfo: LoginType) => {
     // Connect the DB
@@ -38,6 +39,9 @@ export const loginService = async (loginInfo: LoginType) => {
 }
 
 export const forgotPasswordService = async (payload: ForgotPasswordType) => {
+    // Connect the DB
+    await connectDB();
+
     // checking user exist or not
     const existUser = await UserRepository.findOneByQuery({email: payload.email});
     if (!existUser) {
@@ -45,6 +49,14 @@ export const forgotPasswordService = async (payload: ForgotPasswordType) => {
     }
     // if exist generate a Random 6 digit otp
     const otp = Math.floor(100000 + Math.random() * 900000);
+
+    // Save the otp to the radis db
+    await redisClient.set(`otp-${payload.email}`, otp, {
+        expiration: {
+            type: 'EX',
+            value: Number(process.env.OTP_EXPIRES_IN)
+        }
+    })
 
     // Send the otp to user email address
     const mailResponse = await sendMail(
@@ -65,5 +77,20 @@ export const forgotPasswordService = async (payload: ForgotPasswordType) => {
 }
 
 export const verifyOtpService = async (payload: OtpType) => {
+    const storedOtp = await redisClient.get(`otp-${payload.email}`);
+    if (!storedOtp) {
+        throw new BusinessError('OTP expired', ResponseStatus.BAD_REQUEST);
+    }
 
+
+    if (Number(storedOtp) !== payload.otp) {
+        throw new BusinessError('Invalid OTP', ResponseStatus.BAD_REQUEST);
+    }
+
+    await redisClient.del(`otp-${payload.email}`);
+
+    return {
+        success: true,
+        message: 'OTP verified successfully'
+    }
 }
