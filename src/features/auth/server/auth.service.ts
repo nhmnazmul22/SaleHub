@@ -1,5 +1,5 @@
 import {connectDB} from "@/config/database";
-import {ForgotPasswordType, LoginType, OtpType} from "@/features/auth/shared/auth.validation";
+import {ForgotPasswordType, LoginType, OtpType, ResetPasswordType} from "@/features/auth/shared/auth.validation";
 import * as UserRepository from "@/features/user/server/user.repository"
 import {NotFoundError} from "@/shared/errors/NotfoundError";
 import {BusinessError} from "@/shared/errors/BusinessError";
@@ -9,6 +9,10 @@ import jwt from "jsonwebtoken";
 import sendMail from "@/lib/sendMail";
 import {redisClient} from "@/config/redis";
 
+/**
+ * Login Service
+ * @param loginInfo
+ */
 export const loginService = async (loginInfo: LoginType) => {
     // Connect the DB
     await connectDB();
@@ -38,6 +42,10 @@ export const loginService = async (loginInfo: LoginType) => {
     );
 }
 
+/**
+ * Forgot the password
+ * @param payload
+ */
 export const forgotPasswordService = async (payload: ForgotPasswordType) => {
     // Connect the DB
     await connectDB();
@@ -76,6 +84,10 @@ export const forgotPasswordService = async (payload: ForgotPasswordType) => {
     }
 }
 
+/**
+ * Verify the otp
+ * @param payload
+ */
 export const verifyOtpService = async (payload: OtpType) => {
     const storedOtp = await redisClient.get(`otp-${payload.email}`);
     if (!storedOtp) {
@@ -89,8 +101,54 @@ export const verifyOtpService = async (payload: OtpType) => {
 
     await redisClient.del(`otp-${payload.email}`);
 
+    // Set the verification satus into redis client
+    await redisClient.set(`verified-${payload.email}`, 'true', {
+        expiration: {
+            type: "EX",
+            value: Number(process.env.VERIFICATION_EXPIRES_IN)
+        }
+    })
     return {
         success: true,
         message: 'OTP verified successfully'
     }
+}
+
+/**
+ * Reset the password
+ * @param payload
+ */
+export const resetPasswordService = async (payload: ResetPasswordType) => {
+    // Connect the DB
+    await connectDB();
+
+    // checking user exist or not
+    const existUser = await UserRepository.findOneByQuery({email: payload.email});
+    if (!existUser) {
+        throw new NotFoundError('User not found');
+    }
+
+    // Checking does user otp verified or not
+    const isVerified = await redisClient.get(`verified-${payload.email}`);
+    if (!Boolean(isVerified)) {
+        throw new BusinessError('OTP not verified', ResponseStatus.BAD_REQUEST);
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(payload.newPassword, 10);
+
+    // Update the user password
+    const result = await UserRepository.updateById(existUser._id as string, {password: hashedPassword})
+
+    if (!result.matchedCount) {
+        throw new BusinessError('Password rest failed', ResponseStatus.INTERNAL_SERVER_ERROR)
+    }
+
+    // Delete the verification status from the redis
+    await redisClient.del(`verified-${payload.email}`);
+
+    return {
+        success: true,
+        message: 'Password reset successfully'
+    };
 }

@@ -1,5 +1,10 @@
 import {NextRequest, NextResponse} from "next/server";
-import {forgotPasswordValidation, loginValidation, otpValidation} from "@/features/auth/shared/auth.validation";
+import {
+    forgotPasswordValidation,
+    loginValidation,
+    otpValidation,
+    resetPasswordValidation
+} from "@/features/auth/shared/auth.validation";
 import {ValidationError} from "@/shared/errors/ValidationError";
 import * as AuthService from "@/features/auth/server/auth.service";
 import {z} from "zod";
@@ -54,7 +59,6 @@ export const forgotPasswordController = async (req: NextRequest) => {
     }
 }
 
-
 export const verifyOtpController = async (req: NextRequest) => {
     try {
         const body = await req.json();
@@ -70,4 +74,25 @@ export const verifyOtpController = async (req: NextRequest) => {
     } catch (error) {
         return handleError(error)
     }
+}
+
+export const resetPasswordController = async (req: NextRequest) => {
+    try {
+        const body = await req.json();
+
+        const validatedResult = resetPasswordValidation.safeParse(body);
+        if (!validatedResult.success) {
+            throw new ValidationError(z.flattenError(validatedResult.error).fieldErrors);
+        }
+
+        const result = await AuthService.resetPasswordService(validatedResult.data);
+
+        return NextResponse.json({
+            success: result.success ?? true,
+            message: result.message ?? "Password reset successfully"
+        })
+    } catch (error) {
+        return handleError(error);
+    }
+
 }
