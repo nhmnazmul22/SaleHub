@@ -76,3 +76,11 @@ export interface JWTUserPayload {
   role: RoleEnumType;
   isActive: boolean;
 }
+
+export interface CategoryTreeType {
+  _id?: string;
+  name: string;
+  parentId?: string;
+  isActive: boolean;
+  children: CategoryTreeType[];
+}

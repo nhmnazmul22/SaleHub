@@ -29,6 +29,25 @@ export const getCategories = async () => {
   }
 };
 
+export const getCategoriesTree = async () => {
+  try {
+    // Check Authentication
+    await verifyAdminAuth();
+
+    const categories = await CategoryService.getCategoriesTree();
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Categories retrieved successful",
+        data: categories,
+      },
+      { status: ResponseStatus.SUCCESS },
+    );
+  } catch (error) {
+    return handleError(error);
+  }
+};
+
 export const createCategory = async (req: NextRequest) => {
   try {
     // Check Authentication

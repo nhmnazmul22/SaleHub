@@ -15,6 +15,12 @@ export const getCategories = async () => {
   return categories;
 };
 
+export const getCategoriesTree = async () => {
+  await connectDB();
+  const categories = await CategoryRepository.findLikeTree();
+  return categories;
+};
+
 export const createCategory = async (payload: CategoryType) => {
   await connectDB();
 
