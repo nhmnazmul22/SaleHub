@@ -1,13 +1,22 @@
-import { objectId } from "@/types";
-import { z } from "zod";
+import {objectId} from "@/types";
+import {z} from "zod";
 
 export const categorySchemaType = z.object({
-  name: z.string().trim().min(1, "Category name is required"),
-  parentId: objectId.optional(),
-  isActive: z.boolean().default(true),
-  createdAt: z.date().optional(),
-  updatedAt: z.date().optional(),
-  deletedAt: z.date().optional(),
+    name: z.string().trim().min(1, "Category name is required"),
+    parentId: objectId.optional(),
+    isActive: z.boolean().default(true),
+    createdAt: z.date().optional(),
+    updatedAt: z.date().optional(),
+    deletedAt: z.date().optional(),
+});
+
+export const categoryUpdateSchemaType = z.object({
+    name: z.string().trim().min(1, "Category name is required"),
+    parentId: objectId.optional(),
+    isActive: z.boolean().default(true),
+    updatedAt: z.date().optional(),
+    deletedAt: z.date().optional(),
 });
 
 export type CategoryType = z.infer<typeof categorySchemaType>;
+export type CategoryUpdateType = z.infer<typeof categoryUpdateSchemaType>
