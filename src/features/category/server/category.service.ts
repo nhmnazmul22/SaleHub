@@ -11,7 +11,7 @@ import {
 
 export const getCategories = async () => {
   await connectDB();
-  const categories = await CategoryRepository.findAll();
+  const categories = await CategoryRepository.findAll({});
   return categories;
 };
 
