@@ -2,6 +2,7 @@ import { ForwardRefExoticComponent, RefAttributes } from "react";
 import { LucideProps } from "lucide-react";
 import { z } from "zod";
 import mongoose from "mongoose";
+import { RoleEnumType } from "./enumType";
 
 export interface StatType {
   title: string;
@@ -69,3 +70,9 @@ export const objectId = z
   .refine((val) => mongoose.Types.ObjectId.isValid(val), {
     message: "Invalid ObjectId",
   });
+
+export interface JWTUserPayload {
+  id: typeof objectId;
+  role: RoleEnumType;
+  isActive: boolean;
+}

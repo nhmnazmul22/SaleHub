@@ -2,9 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import * as BranchService from "@/features/branch/server/branch.service";
 import ResponseStatus from "@/config/status";
 import { handleError } from "@/helper/error.helper";
+import { verifyAuth } from "@/lib/verifyAuth";
 
-export const getBranches = async () => {
+export const getBranches = async (req: NextRequest) => {
   try {
+     // Check Authentication
+     await verifyAuth(req);
+
     const result = await BranchService.getAllBranch();
     return NextResponse.json(
       {
@@ -21,6 +25,10 @@ export const getBranches = async () => {
 
 export const createBranch = async (req: NextRequest) => {
   try {
+     // Check Authentication
+     await verifyAuth(req);
+
+
     const body = await req.json();
     const branch = await BranchService.createBranch(body);
     return NextResponse.json(
@@ -41,6 +49,9 @@ export const updateBranch = async (
   ctx: RouteContext<"/api/branches/[id]">,
 ) => {
   try {
+    // Check Authentication
+    await verifyAuth(req);
+
     const { id } = await ctx.params;
     const body = await req.json();
 
@@ -64,6 +75,9 @@ export const deleteBranch = async (
   ctx: RouteContext<"/api/branches/[id]">,
 ) => {
   try {
+    // Check Authentication
+    await verifyAuth(req);
+
     const { id: branchId } = await ctx.params;
 
     const deletedBranch = await BranchService.deleteBranch(branchId);
@@ -86,6 +100,9 @@ export const getBranchInfo = async (
   ctx: RouteContext<"/api/branches/[id]">,
 ) => {
   try {
+    // Check Authentication
+    await verifyAuth(req);
+
     const { id: branchId } = await ctx.params;
 
     const branchInfo = await BranchService.getBranch(branchId);

@@ -5,8 +5,8 @@ import * as BranchController from "@/features/branch/server/branch.controller";
  * Get all branch list
  * @param req NextRequest
  */
-export async function GET() {
-  return await BranchController.getBranches();
+export async function GET(req: NextRequest) {
+  return await BranchController.getBranches(req);
 }
 
 /**
