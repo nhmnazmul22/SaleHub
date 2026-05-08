@@ -3,11 +3,18 @@ import * as UserService from "@/features/user/server/user.service";
 import ResponseStatus from "@/config/status";
 import { handleError } from "@/helper/error.helper";
 import z from "zod";
-import { userSchemaType, userUpdateSchemaType } from "../shared/user.validation";
+import {
+  userSchemaType,
+  userUpdateSchemaType,
+} from "../shared/user.validation";
 import { ValidationError } from "@/shared/errors/ValidationError";
+import { verifyAdminAuth } from "@/lib/verifyAuth";
 
 export const getUsers = async () => {
   try {
+    // Check Authentication
+    await verifyAdminAuth();
+
     const users = await UserService.getAllUsers();
     return NextResponse.json(
       {
@@ -22,8 +29,11 @@ export const getUsers = async () => {
   }
 };
 
-export const createUser = async (req: Request) => {
+export const createUser = async (req: NextRequest) => {
   try {
+    // Check Authentication
+    await verifyAdminAuth();
+
     const body = await req.json();
     const validationResult = userSchemaType.safeParse(body);
 
@@ -52,6 +62,9 @@ export const updateUserInfo = async (
   ctx: RouteContext<"/api/users/[id]">,
 ) => {
   try {
+    // Check Authentication
+    await verifyAdminAuth();
+
     const { id } = await ctx.params;
     const body = await req.json();
 
@@ -59,7 +72,9 @@ export const updateUserInfo = async (
     const validationResult = userUpdateSchemaType.safeParse(body);
 
     if (!validationResult.success) {
-      throw new ValidationError(z.flattenError(validationResult.error).fieldErrors);
+      throw new ValidationError(
+        z.flattenError(validationResult.error).fieldErrors,
+      );
     }
 
     const result = await UserService.updateUser(id, body);
@@ -81,6 +96,9 @@ export const deleteUserInfo = async (
   ctx: RouteContext<"/api/users/[id]">,
 ) => {
   try {
+    // Check Authentication
+    await verifyAdminAuth();
+
     const { id: userId } = await ctx.params;
 
     const deletedUser = await UserService.deleteUser(userId);
@@ -103,6 +121,9 @@ export const getUserInfo = async (
   ctx: RouteContext<"/api/users/[id]">,
 ) => {
   try {
+    // Check admin Authentication
+    await verifyAdminAuth();
+
     const { id: userId } = await ctx.params;
 
     const userInfo = await UserService.getUser(userId);

@@ -2,12 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import * as BranchService from "@/features/branch/server/branch.service";
 import ResponseStatus from "@/config/status";
 import { handleError } from "@/helper/error.helper";
-import { verifyAuth } from "@/lib/verifyAuth";
+import { verifyAdminAuth } from "@/lib/verifyAuth";
 
 export const getBranches = async (req: NextRequest) => {
   try {
      // Check Authentication
-     await verifyAuth(req);
+     await verifyAdminAuth();
 
     const result = await BranchService.getAllBranch();
     return NextResponse.json(
@@ -26,7 +26,7 @@ export const getBranches = async (req: NextRequest) => {
 export const createBranch = async (req: NextRequest) => {
   try {
      // Check Authentication
-     await verifyAuth(req);
+     await verifyAdminAuth();
 
 
     const body = await req.json();
@@ -50,7 +50,7 @@ export const updateBranch = async (
 ) => {
   try {
     // Check Authentication
-    await verifyAuth(req);
+    await verifyAdminAuth();
 
     const { id } = await ctx.params;
     const body = await req.json();
@@ -76,7 +76,7 @@ export const deleteBranch = async (
 ) => {
   try {
     // Check Authentication
-    await verifyAuth(req);
+    await verifyAdminAuth();
 
     const { id: branchId } = await ctx.params;
 
@@ -101,7 +101,7 @@ export const getBranchInfo = async (
 ) => {
   try {
     // Check Authentication
-    await verifyAuth(req);
+    await verifyAdminAuth();
 
     const { id: branchId } = await ctx.params;
 
