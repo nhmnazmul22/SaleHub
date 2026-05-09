@@ -143,13 +143,13 @@ export const deleteCategory = async (
 
     const { id } = await ctx.params;
 
-    const deletedUser = await CategoryService.deleteCategory(id);
+    const result = await CategoryService.deleteCategory(id);
 
     return NextResponse.json(
       {
         success: true,
         message: "Category deleted successful",
-        data: deletedUser,
+        data: result,
       },
       { status: ResponseStatus.SUCCESS },
     );
