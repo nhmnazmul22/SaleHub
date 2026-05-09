@@ -8,4 +8,11 @@ export const brandSchemaType = z.object({
   deletedAt: z.date().optional(),
 });
 
+export const brandUpdateSchemaType = z.object({
+  name: z.string().trim().optional(),
+  shortName: z.string().trim().optional(),
+  deletedAt: z.date().optional(),
+});
+
 export type BrandType = z.infer<typeof brandSchemaType>;
+export type BrandUpdateType = z.infer<typeof brandUpdateSchemaType>;

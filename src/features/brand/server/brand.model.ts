@@ -1,11 +1,11 @@
+import { softDeletePlugin } from "@/plugin/softDelete.plugin";
 import { Schema, model, models } from "mongoose";
-import { boolean } from "zod";
 
 const brandSchema = new Schema(
   {
     name: { type: String, required: true },
     shortName: { type: String, default: null },
-    isActive: { type: boolean, default: true },
+    isActive: { type: Boolean, default: true },
     deletedAt: { type: Date, default: null },
   },
   {
@@ -13,6 +13,8 @@ const brandSchema = new Schema(
     versionKey: false,
   },
 );
+
+brandSchema.plugin(softDeletePlugin)
 
 const BrandModel = models.brands ||  model("brands", brandSchema);
 
