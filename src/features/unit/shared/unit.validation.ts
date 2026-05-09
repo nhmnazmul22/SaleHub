@@ -8,4 +8,11 @@ export const unitSchemaType = z.object({
   deletedAt: z.date().optional(),
 });
 
+export const unitUpdateSchemaType = z.object({
+  key: z.string().trim().optional(),
+  value: z.string().trim().optional(),
+  deletedAt: z.date().optional(),
+});
+
 export type UnitType = z.infer<typeof unitSchemaType>;
+export type UnitUpdateType = z.infer<typeof unitUpdateSchemaType>;
