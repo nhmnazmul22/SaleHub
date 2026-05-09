@@ -1,5 +1,6 @@
 import { Schema, model, models } from "mongoose";
 import { RoleEnumType } from "@/types/enumType";
+import { softDeletePlugin } from "@/plugin/softDelete.plugin";
 
 const userSchema = new Schema(
   {
@@ -36,6 +37,9 @@ const userSchema = new Schema(
     timestamps: true,
   },
 );
+
+
+userSchema.plugin(softDeletePlugin);
 
 const UserModel = models.users || model("users", userSchema);
 

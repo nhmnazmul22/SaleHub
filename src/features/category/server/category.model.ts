@@ -1,3 +1,4 @@
+import { softDeletePlugin } from "@/plugin/softDelete.plugin";
 import { Schema, model, models } from "mongoose";
 
 const categorySchema = new Schema(
@@ -17,6 +18,7 @@ const categorySchema = new Schema(
     versionKey: false,
   },
 );
+categorySchema.plugin(softDeletePlugin);
 
 const CategoryModel = models.categories || model("categories", categorySchema);
 
