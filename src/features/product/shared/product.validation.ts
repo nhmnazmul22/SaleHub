@@ -23,35 +23,29 @@ export const productSchema = z.object({
     .default(VatDiscountEnumType.FIXED),
   vatAmount: z.number().min(0).default(0),
   isActive: z.boolean().default(true),
-  createdBy: objectId,
-  createdAt: z.date().optional(),
-  updatedAt: z.date().optional(),
-  deletedAt: z.date().optional(),
 });
 
 export const productUpdateSchema = z.object({
-  name: z.string().min(1, "Name is required").trim(),
+  name: z.string().optional(),
   slug: z.string().trim().optional(),
   categoryId: objectId.optional(),
   brandId: objectId.optional(),
   unitId: objectId.optional(),
   description: z.string().optional(),
   imageUrl: z.string().optional(),
-  basePrice: z.number().min(0).default(0),
-  baseShippingAmount: z.number().min(0).default(0),
-  discountEnabled: z.boolean().default(false),
+  basePrice: z.number().optional(),
+  baseShippingAmount: z.number().optional(),
+  discountEnabled: z.boolean().optional(),
   discountType: z
     .enum([VatDiscountEnumType.PERCENT, VatDiscountEnumType.FIXED])
-    .default(VatDiscountEnumType.FIXED),
-  discountAmount: z.number().min(0).default(0),
-  vatEnabled: z.boolean().default(false),
+    .optional(),
+  discountAmount: z.number().optional(),
+  vatEnabled: z.boolean().optional(),
   vatType: z
     .enum([VatDiscountEnumType.PERCENT, VatDiscountEnumType.FIXED])
-    .default(VatDiscountEnumType.FIXED),
-  vatAmount: z.number().min(0).default(0),
-  isActive: z.boolean().default(true),
-  updatedAt: z.date().optional(),
-  deletedAt: z.date().optional(),
+    .optional(),
+  vatAmount: z.number().optional(),
+  isActive: z.boolean().optional(),
 });
 
 export type ProductType = z.infer<typeof productSchema>;

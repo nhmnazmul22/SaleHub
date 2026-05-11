@@ -49,7 +49,7 @@ export const getProductById = async (
 
 export const createProduct = async (req: NextRequest) => {
    try {
-      await verifyAdminAuth();
+      const auth = await verifyAdminAuth();
 
       const body = await req.json();
       const validationResult = productSchema.safeParse(body);
@@ -60,7 +60,7 @@ export const createProduct = async (req: NextRequest) => {
         );
       }
 
-      const result = await ProductService.createProduct(validationResult.data);
+      const result = await ProductService.createProduct(validationResult.data, auth.id);
       return NextResponse.json(
         {
           success: true,

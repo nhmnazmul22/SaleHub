@@ -1,13 +1,15 @@
 import { connectDB } from "@/config/database";
 import * as ProductRepository from "@/features/product/server/product.repository";
 import { BusinessError } from "@/shared/errors/BusinessError";
-import ResponseStatus from "@/config/status";
 import mongoose from "mongoose";
 import { NotFoundError } from "@/shared/errors/NotfoundError";
 import {
   ProductType,
   ProductUpdateType,
 } from "@/features/product/shared/product.validation";
+import { generateUniqueSlug } from "../shared/lib";
+import ResponseStatus from "@/config/status";
+import { ZodString } from "zod";
 
 export const getProducts = async () => {
   await connectDB();
@@ -15,18 +17,19 @@ export const getProducts = async () => {
   return products;
 };
 
-export const createProduct = async (payload: ProductType) => {
+export const createProduct = async (
+  payload: ProductType,
+  userId: ZodString,
+) => {
   await connectDB();
 
-  const existingProduct = await ProductRepository.findOneByQuery({
-    slug: payload.slug,
-  });
+  const newProductPayload = {
+    ...payload,
+    slug: await generateUniqueSlug(payload.name),
+    createdBy: userId,
+  };
 
-  if (existingProduct) {
-    throw new BusinessError("Product already exists with this slug!");
-  }
-
-  const newProduct = await ProductRepository.createOne(payload);
+  const newProduct = await ProductRepository.createOne(newProductPayload);
 
   if (!newProduct) {
     throw new BusinessError(
@@ -57,13 +60,8 @@ export const updateProduct = async (
   }
 
   if (body.slug) {
-    const slugOwner = await ProductRepository.findOneByQuery({
-      slug: body.slug,
-    });
-
-    if (slugOwner && slugOwner._id.toString() !== productId) {
-      throw new BusinessError("Another product already uses this slug!");
-    }
+    const slug = await generateUniqueSlug(body.slug);
+    body.slug = slug;
   }
 
   return await ProductRepository.updateById(productId, body);
