@@ -1,0 +1,6 @@
+Product Variants Api:
+- GET: /api/products-variants/{productId} -> list product variant based on product
+- POST: /api/product-variants/{productId} => create new product variant for specific product
+- PATCH: /api/product-variants/{variantId} => update product variant
+- DELETE: /api/product-variants/{variantId} => delete product variant
+- 
