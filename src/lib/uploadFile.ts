@@ -8,6 +8,12 @@ type UploadResponse = {
   error?: string;
 };
 
+/**
+ * Upload images into cloudinary
+ * @param file: string
+ * @param fileType: string
+ * @returns UploadResponse
+ */
 export const uploadImage = async (
   file: string,
   fileType: string = "products",
@@ -34,7 +40,11 @@ export const uploadImage = async (
   }
 };
 
-// Optimize delivery by resizing and applying auto-format and auto-quality
+/**
+ * Optimize delivery by resizing and applying auto-format and auto-quality
+ * @param publicId: string,
+ * @returns string
+ */
 export const optimizeUrl = (publicId: string): string => {
   return cloudinary.url(publicId, {
     fetch_format: "auto",
@@ -42,7 +52,13 @@ export const optimizeUrl = (publicId: string): string => {
   });
 };
 
-// Transform the image: auto-crop to square aspect_ratio
+/**
+ * Transform the image: auto-crop to square aspect_ratio
+ * @param publicId: string,
+ * @param width: number,
+ * @param height: number,
+ * @returns string
+ */
 export const autoCropUrl = (
   publicId: string,
   width: number,
@@ -56,6 +72,11 @@ export const autoCropUrl = (
   });
 };
 
+/**
+ * Image delete from cloudinary
+ * @param publicId string
+ * @returns Promise<any>
+ */
 export const deleteImage = async (publicId: string) => {
   return await cloudinary.uploader.destroy(publicId);
 };
