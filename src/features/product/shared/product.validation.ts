@@ -4,12 +4,12 @@ import { z } from "zod";
 
 export const productSchema = z.object({
   name: z.string().min(1, "Name is required").trim(),
-  slug: z.string().trim().optional(),
   categoryId: objectId,
   brandId: objectId,
   unitId: objectId,
   description: z.string().optional(),
-  imageUrl: z.string().optional(),
+  image: z.instanceof(File).optional().nullable(),
+  images: z.array(z.instanceof(File)).optional().nullable(),
   basePrice: z.number().min(0).default(0),
   baseShippingAmount: z.number().min(0).default(0),
   discountEnabled: z.boolean().default(false),
@@ -47,6 +47,3 @@ export const productUpdateSchema = z.object({
   vatAmount: z.number().optional(),
   isActive: z.boolean().optional(),
 });
-
-export type ProductType = z.infer<typeof productSchema>;
-export type ProductUpdateType = z.infer<typeof productUpdateSchema>;

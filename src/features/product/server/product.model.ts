@@ -41,6 +41,12 @@ const productSchema = new Schema(
     imageUrl: {
       type: String,
       trim: true,
+      default: null,
+    },
+
+    images: {
+      type: [String],
+      default: [],
     },
 
     basePrice: {
