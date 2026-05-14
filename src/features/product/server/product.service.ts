@@ -3,12 +3,9 @@ import * as ProductRepository from "@/features/product/server/product.repository
 import { BusinessError } from "@/shared/errors/BusinessError";
 import mongoose from "mongoose";
 import { NotFoundError } from "@/shared/errors/NotfoundError";
-import {
-  ProductType,
-  ProductUpdateType,
-} from "@/features/product/shared/product.validation";
-import { generateUniqueSlug } from "../shared/lib";
-import ResponseStatus from "@/config/status";
+import { generateUniqueSlug, uploadImageHelper } from "../shared/lib";
+import { UploadResponse } from "@/types";
+import { ProductInputType, ProductUpdateType } from "../shared/type";
 import { ZodString } from "zod";
 
 export const getProducts = async () => {
@@ -18,27 +15,50 @@ export const getProducts = async () => {
 };
 
 export const createProduct = async (
-  payload: ProductType,
-  userId: ZodString,
+  payload: ProductInputType,
+  userId: string,
 ) => {
-  await connectDB();
+  // Handling image upload
+  let imageUploadResult = null;
+  let imagesUploadResult: UploadResponse[] | [] = [];
 
+  if (payload.image) {
+    imageUploadResult = (await uploadImageHelper(
+      payload.image,
+      "products",
+    )) as UploadResponse;
+  }
+
+  if (payload.images) {
+    imagesUploadResult = (await uploadImageHelper(
+      payload.images,
+      "products",
+    )) as UploadResponse[];
+  }
+
+  const imageUploadFail = imagesUploadResult.find((upload) => !upload.success);
+  if (!imageUploadResult?.success || imageUploadFail) {
+    throw new BusinessError(
+      `Image Upload Error: ${imageUploadResult?.error ?? imageUploadFail?.error}`,
+    );
+  }
+
+  // Product creating
+  await connectDB();
   const newProductPayload = {
     ...payload,
+    imageUrl: imageUploadResult?.url ?? null,
+    images: imagesUploadResult
+      ?.map((image) => image.url)
+      .filter((url): url is string => Boolean(url)),
     slug: await generateUniqueSlug(payload.name),
     createdBy: userId,
   };
 
-  const newProduct = await ProductRepository.createOne(newProductPayload);
+  delete newProductPayload.image;
 
-  if (!newProduct) {
-    throw new BusinessError(
-      "Failed to create product",
-      ResponseStatus.INTERNAL_SERVER_ERROR,
-    );
-  }
-
-  return newProduct;
+  // const newProduct = await ProductRepository.createOne(newProductPayload);
+  return newProductPayload;
 };
 
 export const updateProduct = async (

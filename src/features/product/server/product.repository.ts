@@ -1,6 +1,6 @@
 import { Types, UpdateWriteOpResult } from "mongoose";
 import ProductModel from "./product.model";
-import { ProductType, ProductUpdateType } from "../shared/product.validation";
+import { ProductType, ProductUpdateType } from "../shared/type";
 
 type ProductDocument = ProductType & {
   _id: Types.ObjectId;
