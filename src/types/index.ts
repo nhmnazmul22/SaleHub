@@ -84,3 +84,10 @@ export interface CategoryTreeType {
   isActive: boolean;
   children: CategoryTreeType[];
 }
+
+export type UploadResponse = {
+  success: boolean;
+  url?: string;
+  publicId?: string;
+  error?: string;
+};

@@ -1,12 +1,11 @@
 import cloudinary from "@/config/cloudinary";
-import { nanoid } from "nanoid";
+import { UploadResponse } from "@/types";
 
-type UploadResponse = {
-  success: boolean;
-  url?: string;
-  publicId?: string;
-  error?: string;
-};
+interface ErrorType {
+  message: string;
+  name: string;
+  http_code: number;
+}
 
 /**
  * Upload images into cloudinary
@@ -15,16 +14,32 @@ type UploadResponse = {
  * @returns UploadResponse
  */
 export const uploadImage = async (
-  file: string,
-  fileType: string = "products",
+  file: File,
+  fileType = "products",
 ): Promise<UploadResponse> => {
   try {
-    const uniquePublicId = `${fileType}-${nanoid(10)}`;
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
 
-    const result = await cloudinary.uploader.upload(file, {
-      folder: fileType,
-      public_id: uniquePublicId,
-      resource_type: "image",
+    const result = await new Promise<{
+      secure_url: string;
+      public_id: string;
+    }>((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        {
+          folder: fileType,
+          resource_type: "image",
+        },
+        (error, result) => {
+          if (error || !result) {
+            return reject(error);
+          }
+
+          resolve(result);
+        },
+      );
+
+      stream.end(buffer);
     });
 
     return {
@@ -32,10 +47,10 @@ export const uploadImage = async (
       url: result.secure_url,
       publicId: result.public_id,
     };
-  } catch (error) {
+  } catch (error: unknown) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Image upload failed",
+      error: (error as ErrorType).message ?? "Image upload failed",
     };
   }
 };
