@@ -6,7 +6,6 @@ import { NotFoundError } from "@/shared/errors/NotfoundError";
 import { generateUniqueSlug, uploadImageHelper } from "../shared/lib";
 import { UploadResponse } from "@/types";
 import { ProductInputType, ProductUpdateType } from "../shared/type";
-import { ZodString } from "zod";
 
 export const getProducts = async () => {
   await connectDB();
@@ -57,8 +56,8 @@ export const createProduct = async (
 
   delete newProductPayload.image;
 
-  // const newProduct = await ProductRepository.createOne(newProductPayload);
-  return newProductPayload;
+  const newProduct = await ProductRepository.createOne(newProductPayload);
+  return newProduct;
 };
 
 export const updateProduct = async (
