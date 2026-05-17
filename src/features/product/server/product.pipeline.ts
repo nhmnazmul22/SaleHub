@@ -26,7 +26,7 @@ export const productPipeline = (query?: Record<string, unknown>) => {
       $lookup: {
         from: "brands",
         let: {
-          categoryId: "$brandId",
+          brandId: "$brandId",
         },
         pipeline: [
           {
@@ -47,7 +47,7 @@ export const productPipeline = (query?: Record<string, unknown>) => {
       $lookup: {
         from: "units",
         let: {
-          categoryId: "$unitId",
+          unitId: "$unitId",
         },
         pipeline: [
           {
