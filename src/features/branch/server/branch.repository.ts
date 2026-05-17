@@ -9,19 +9,19 @@ import { Types } from "mongoose";
 export const findAll = async (
   query?: Record<string, string>,
 ): Promise<BranchType[] | []> => {
-  return await BranchModel.find(query);
+  return BranchModel.find(query);
 };
 
 export const findOneByQuery = async (
   query?: Record<string, string>,
 ): Promise<BranchType | null> => {
-  return await BranchModel.findOne(query);
+  return BranchModel.findOne(query);
 };
 
 export const findById = async (
   id: string,
 ): Promise<BranchUpdateType | null> => {
-  return await BranchModel.findOne({ _id: new Types.ObjectId(id) });
+  return BranchModel.findOne({_id: new Types.ObjectId(id)});
 };
 
 export const createOne = async (data: BranchType): Promise<BranchType> => {
@@ -32,9 +32,9 @@ export const updateById = async (
   id: string,
   data: BranchUpdateType,
 ): Promise<UpdateWriteOpResult> => {
-  return await BranchModel.updateOne(
-    { _id: new Types.ObjectId(id) },
-    { $set: data },
+  return BranchModel.updateOne(
+      {_id: new Types.ObjectId(id)},
+      {$set: data},
   );
 };
 

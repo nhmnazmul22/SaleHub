@@ -1,6 +1,7 @@
 import { Types, UpdateWriteOpResult } from "mongoose";
 import ProductModel from "./product.model";
 import { ProductType, ProductUpdateType } from "../shared/type";
+import { productPipeline } from "./product.pipeline";
 
 type ProductDocument = ProductType & {
   _id: Types.ObjectId;
@@ -9,7 +10,7 @@ type ProductDocument = ProductType & {
 export const findAll = async (
   query?: Record<string, unknown>,
 ): Promise<ProductType[] | []> => {
-  return ProductModel.find(query || {});
+  return ProductModel.aggregate(productPipeline(query));
 };
 
 export const findOneByQuery = async (
