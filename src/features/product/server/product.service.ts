@@ -5,7 +5,12 @@ import mongoose from "mongoose";
 import { NotFoundError } from "@/shared/errors/NotfoundError";
 import { generateUniqueSlug, uploadImageHelper } from "../shared/lib";
 import { UploadResponse } from "@/types";
-import { ProductInputType, ProductUpdateType } from "../shared/type";
+import {
+  ProductInputType,
+  ProductType,
+  ProductUpdateType,
+} from "../shared/type";
+import { deleteImage } from "@/lib/uploadFile";
 
 export const getProducts = async () => {
   await connectDB();
@@ -62,7 +67,7 @@ export const createProduct = async (
 
 export const updateProduct = async (
   productId: string,
-  body: ProductUpdateType,
+  payload: Partial<ProductInputType>,
 ) => {
   if (!mongoose.Types.ObjectId.isValid(productId)) {
     throw new BusinessError(
@@ -70,20 +75,53 @@ export const updateProduct = async (
     );
   }
 
+  const productUpdateInfo = { ...payload } as Partial<ProductType>;
+
+  if (payload.image || payload.images?.length) {
+    // Handle images update
+    let imageUploadResult = null;
+    let imagesUploadResult: UploadResponse[] | [] = [];
+
+    if (payload.image) {
+      imageUploadResult = (await uploadImageHelper(
+        payload.image,
+        "products",
+      )) as UploadResponse;
+    }
+
+    if (payload.images) {
+      imagesUploadResult = (await uploadImageHelper(
+        payload.images,
+        "products",
+      )) as UploadResponse[];
+    }
+
+    const imageUploadFail = imagesUploadResult.find(
+      (upload) => !upload.success,
+    );
+    if (!imageUploadResult?.success || imageUploadFail) {
+      throw new BusinessError(
+        `Image Upload Error: ${imageUploadResult?.error ?? imageUploadFail?.error}`,
+      );
+    }
+    productUpdateInfo.imageUrl = imageUploadResult?.url ?? null;
+    productUpdateInfo.images = imagesUploadResult
+      ?.map((image) => image.url)
+      .filter((url): url is string => Boolean(url));
+  }
+
+  if (productUpdateInfo.slug) {
+    const slug = await generateUniqueSlug(productUpdateInfo.slug);
+    productUpdateInfo.slug = slug;
+  }
+
   await connectDB();
-
   const existProduct = await ProductRepository.findById(productId);
-
   if (!existProduct) {
     throw new NotFoundError(`Product not found with id: ${productId}`);
   }
 
-  if (body.slug) {
-    const slug = await generateUniqueSlug(body.slug);
-    body.slug = slug;
-  }
-
-  return await ProductRepository.updateById(productId, body);
+  return await ProductRepository.updateById(productId, productUpdateInfo);
 };
 
 export const deleteProduct = async (productId: string) => {

@@ -31,3 +31,7 @@ export const uploadImageHelper = async (
 
   return await Promise.all(files.map((file) => uploadImage(file, fileType)));
 };
+
+// export const identifyImagePublicId = (fileType, imageUrl)=>{
+//   return
+// }

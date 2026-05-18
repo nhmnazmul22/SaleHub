@@ -38,7 +38,7 @@ export const createOne = async (data: ProductType): Promise<ProductType> => {
 
 export const updateById = async (
   id: string,
-  data: Partial<ProductUpdateType>,
+  data: Partial<ProductType>,
 ): Promise<UpdateWriteOpResult> => {
   return ProductModel.updateOne(
     { _id: new Types.ObjectId(id) },

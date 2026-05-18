@@ -103,8 +103,24 @@ export const updateProduct = async (
     await verifyAdminAuth();
 
     const { id } = await ctx.params;
-    const body = await req.json();
-    const validationResult = productUpdateSchema.safeParse(body);
+    const body = await req.formData();
+
+
+    const raw = Object.fromEntries(body.entries());
+
+    const parsedPayload = {
+      ...raw,
+      image: body.get("image") as File,
+      images: body.getAll("images") as File[],
+      basePrice: Number(raw.basePrice),
+      baseShippingAmount: Number(raw.baseShippingAmount),
+      discountEnabled: raw.discountEnabled === "true",
+      discountAmount: Number(raw.discountAmount),
+      vatEnabled: raw.vatEnabled === "true",
+      vatAmount: Number(raw.vatAmount),
+    };
+
+    const validationResult = productUpdateSchema.safeParse(parsedPayload);
 
     if (!validationResult.success) {
       throw new ValidationError(
