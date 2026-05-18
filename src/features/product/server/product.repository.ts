@@ -2,7 +2,6 @@ import { Types, UpdateWriteOpResult } from "mongoose";
 import ProductModel from "./product.model";
 import {
   ProductType,
-  ProductUpdateType,
   ProductResponseType,
 } from "../shared/type";
 import { productPipeline } from "./product.pipeline";

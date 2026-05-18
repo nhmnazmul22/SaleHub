@@ -1,6 +1,23 @@
 import { VatDiscountEnumType } from "@/types/enumType";
 import { Schema, model, models } from "mongoose";
 
+const imageSchema = new Schema(
+  {
+    url: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+
+    publicId: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+  },
+  { _id: false, timestamps:false, versionKey: false },
+);
+
 const productSchema = new Schema(
   {
     name: {
@@ -38,14 +55,13 @@ const productSchema = new Schema(
       type: String,
     },
 
-    imageUrl: {
-      type: String,
-      trim: true,
+    image: {
+      type: imageSchema,
       default: null,
     },
 
     images: {
-      type: [String],
+      type: [imageSchema],
       default: [],
     },
 

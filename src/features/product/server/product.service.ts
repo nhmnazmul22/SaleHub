@@ -5,11 +5,7 @@ import mongoose from "mongoose";
 import { NotFoundError } from "@/shared/errors/NotfoundError";
 import { generateUniqueSlug, uploadImageHelper } from "../shared/lib";
 import { UploadResponse } from "@/types";
-import {
-  ProductInputType,
-  ProductType,
-  ProductUpdateType,
-} from "../shared/type";
+import { ImageType, ProductInputType, ProductType } from "../shared/type";
 import { deleteImage } from "@/lib/uploadFile";
 
 export const getProducts = async () => {
@@ -51,15 +47,19 @@ export const createProduct = async (
   await connectDB();
   const newProductPayload = {
     ...payload,
-    imageUrl: imageUploadResult?.url ?? null,
+    image: {
+      url: imageUploadResult?.url ?? null,
+      publicId: imageUploadResult?.publicId ?? null,
+    },
     images: imagesUploadResult
-      ?.map((image) => image.url)
-      .filter((url): url is string => Boolean(url)),
+      ?.map((image) => ({
+        url: image.url ?? null,
+        publicId: image.publicId ?? null,
+      }))
+      .filter((image): image is ImageType => Boolean(image.url)),
     slug: await generateUniqueSlug(payload.name),
     createdBy: userId,
   };
-
-  delete newProductPayload.image;
 
   const newProduct = await ProductRepository.createOne(newProductPayload);
   return newProduct;
@@ -75,6 +75,12 @@ export const updateProduct = async (
     );
   }
 
+  await connectDB();
+  const existProduct = await ProductRepository.findById(productId);
+  if (!existProduct) {
+    throw new NotFoundError(`Product not found with id: ${productId}`);
+  }
+
   const productUpdateInfo = { ...payload } as Partial<ProductType>;
 
   if (payload.image || payload.images?.length) {
@@ -87,6 +93,10 @@ export const updateProduct = async (
         payload.image,
         "products",
       )) as UploadResponse;
+
+      if (imageUploadResult.success && imageUploadResult.publicId) {
+        await deleteImage(imageUploadResult.publicId);
+      }
     }
 
     if (payload.images) {
@@ -94,6 +104,12 @@ export const updateProduct = async (
         payload.images,
         "products",
       )) as UploadResponse[];
+
+      imagesUploadResult.forEach(async (image) => {
+        if (image.success && image.publicId) {
+          await deleteImage(image.publicId);
+        }
+      });
     }
 
     const imageUploadFail = imagesUploadResult.find(
@@ -104,21 +120,21 @@ export const updateProduct = async (
         `Image Upload Error: ${imageUploadResult?.error ?? imageUploadFail?.error}`,
       );
     }
-    productUpdateInfo.imageUrl = imageUploadResult?.url ?? null;
+    productUpdateInfo.image = {
+      url: imageUploadResult?.url ?? null,
+      publicId: imageUploadResult?.publicId ?? null,
+    };
     productUpdateInfo.images = imagesUploadResult
-      ?.map((image) => image.url)
-      .filter((url): url is string => Boolean(url));
+      ?.map((image) => ({
+        url: image.url ?? null,
+        publicId: image.publicId ?? null,
+      }))
+      .filter((image): image is ImageType => Boolean(image.url));
   }
 
   if (productUpdateInfo.slug) {
     const slug = await generateUniqueSlug(productUpdateInfo.slug);
     productUpdateInfo.slug = slug;
-  }
-
-  await connectDB();
-  const existProduct = await ProductRepository.findById(productId);
-  if (!existProduct) {
-    throw new NotFoundError(`Product not found with id: ${productId}`);
   }
 
   return await ProductRepository.updateById(productId, productUpdateInfo);

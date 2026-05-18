@@ -4,10 +4,12 @@ import { CategoryType } from "@/features/category/shared/category.validation";
 import { BrandType } from "@/features/brand/shared/brand.validation";
 import { UnitType } from "@/features/unit/shared/unit.validation";
 
+
+export type ImageType = {url: string | null , publicId: string | null}
 export type ProductInputType = z.infer<typeof productSchema>;
 export type ProductType = Omit<ProductInputType, "image" | "images"> & {
-  imageUrl: string | null;
-  images?: string[];
+  image: ImageType;
+  images: ImageType[];
   slug: string;
   createdBy: string;
 };
