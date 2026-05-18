@@ -1,6 +1,10 @@
 import { Types, UpdateWriteOpResult } from "mongoose";
 import ProductModel from "./product.model";
-import { ProductType, ProductUpdateType } from "../shared/type";
+import {
+  ProductType,
+  ProductUpdateType,
+  ProductResponseType,
+} from "../shared/type";
 import { productPipeline } from "./product.pipeline";
 
 type ProductDocument = ProductType & {
@@ -9,7 +13,7 @@ type ProductDocument = ProductType & {
 
 export const findAll = async (
   query?: Record<string, unknown>,
-): Promise<ProductType[] | []> => {
+): Promise<ProductResponseType[] | []> => {
   return ProductModel.aggregate(productPipeline(query));
 };
 
@@ -19,8 +23,13 @@ export const findOneByQuery = async (
   return ProductModel.findOne(query);
 };
 
-export const findById = async (id: string): Promise<ProductDocument | null> => {
-  return ProductModel.findOne({ _id: new Types.ObjectId(id) });
+export const findById = async (
+  id: string,
+): Promise<ProductResponseType | null> => {
+  const [product] = await ProductModel.aggregate(
+    productPipeline({ _id: new Types.ObjectId(id) }),
+  );
+  return product ?? null;
 };
 
 export const createOne = async (data: ProductType): Promise<ProductType> => {

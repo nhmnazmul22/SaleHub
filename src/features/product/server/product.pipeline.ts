@@ -64,15 +64,25 @@ export const productPipeline = (query?: Record<string, unknown>) => {
         as: "unit",
       },
     },
+    {
+      $lookup: {
+        from: "users",
+        localField: "createdBy",
+        foreignField: "_id",
+        as: "created",
+      },
+    },
     { $unwind: "$category" },
     { $unwind: "$brand" },
     { $unwind: "$unit" },
+    { $unwind: "$created" },
     {
       $project: {
         categoryId: 0,
         brandId: 0,
         unitId: 0,
         deletedAt: 0,
+        createdBy: 0,
         "category.deletedAt": 0,
         "category.createdAt": 0,
         "category.updatedAt": 0,
@@ -82,6 +92,11 @@ export const productPipeline = (query?: Record<string, unknown>) => {
         "unit.deletedAt": 0,
         "unit.createdAt": 0,
         "unit.updatedAt": 0,
+        "created.password": 0,
+        "created.lastLogin": 0,
+        "created.deletedAt": 0,
+        "created.createdAt": 0,
+        "created.updatedAt": 0,
       },
     },
   ];
