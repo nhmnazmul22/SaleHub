@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import * as ProductVariantService from "@/features/productVariants/server/productVariant.service";
-import { verifyAdminAuth } from "@/lib/verifyAuth";
+import {verifyAdminAuth} from "@/lib/verifyAuth";
 import ResponseStatus from "@/config/status";
-import { handleError } from "@/helper/error.helper";
-import { ValidationError } from "@/shared/errors/ValidationError";
+import {handleError} from "@/helper/error.helper";
+import {ValidationError} from "@/shared/errors/ValidationError";
 import z from "zod";
 import {productVariantCreateSchema} from "@/features/productVariants/shared/productVariant.validation";
 
@@ -13,7 +13,7 @@ export const getProductVariants = async (
     try {
         await verifyAdminAuth();
 
-        const { id } = await ctx.params;
+        const {id} = await ctx.params;
         const productVariants = await ProductVariantService.getProductVariants(id);
 
         return NextResponse.json(
@@ -22,7 +22,7 @@ export const getProductVariants = async (
                 message: "Product Variants retrieved successfully",
                 data: productVariants,
             },
-            { status: ResponseStatus.SUCCESS },
+            {status: ResponseStatus.SUCCESS},
         );
     } catch (error) {
         return handleError(error);
@@ -36,11 +36,11 @@ export const createProductVariant = async (req: NextRequest) => {
 
         const parsedPayload = {
             ...body,
-            purchasePrice: Number(body.basePrice ?? 0),
-            unitPrice: Number(body.unitPrice ?? 0),
-            sellPrice: Number(body.sellPrice ?? 0),
-            lastUnitPrice: Number(body.purchasePrice ?? 0),
-            shippingAmount: Number(body.shippingAmount ?? 0),
+            purchasePrice: Number(body.basePrice || 0),
+            unitPrice: Number(body.unitPrice || 0),
+            sellPrice: Number(body.sellPrice || 0),
+            lastUnitPrice: Number(body.purchasePrice || 0),
+            shippingAmount: Number(body.shippingAmount || 0),
             discountEnabled: body.discountEnabled === "true",
             discountAmount: Number(body.discountAmount),
             vatEnabled: body.vatEnabled === "true",
@@ -56,6 +56,7 @@ export const createProductVariant = async (req: NextRequest) => {
         }
 
         // Logic here
+        // const result = await ProductVariantService.generateProductVariants()
 
         return NextResponse.json(
             {
@@ -63,7 +64,7 @@ export const createProductVariant = async (req: NextRequest) => {
                 message: "Product created successfully",
                 data: {},
             },
-            { status: ResponseStatus.CREATED },
+            {status: ResponseStatus.CREATED},
         );
     } catch (error) {
         return handleError(error);
