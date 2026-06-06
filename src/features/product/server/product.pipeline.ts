@@ -101,3 +101,14 @@ export const productPipeline = (query?: Record<string, unknown>) => {
     },
   ];
 };
+
+export const productMinifiedProjectPipeline = [
+  {
+    $project: {
+      _id: 1,
+      name: 1,
+      slug: 1,
+      image: 1
+    }
+  }
+]

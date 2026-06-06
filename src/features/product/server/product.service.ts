@@ -1,17 +1,16 @@
-import { connectDB } from "@/config/database";
+import {connectDB} from "@/config/database";
 import * as ProductRepository from "@/features/product/server/product.repository";
-import { BusinessError } from "@/shared/errors/BusinessError";
+import {BusinessError} from "@/shared/errors/BusinessError";
 import mongoose from "mongoose";
-import { NotFoundError } from "@/shared/errors/NotfoundError";
-import { generateUniqueSlug, uploadImageHelper } from "../shared/lib";
-import { UploadResponse } from "@/types";
-import { ImageType, ProductInputType, ProductType } from "../shared/type";
-import { deleteImage } from "@/lib/uploadFile";
+import {NotFoundError} from "@/shared/errors/NotfoundError";
+import {generateUniqueSlug, uploadImageHelper} from "../shared/lib";
+import {UploadResponse} from "@/types";
+import {ImageType, ProductInputType, ProductType} from "../shared/type";
+import {deleteImage} from "@/lib/uploadFile";
 
 export const getProducts = async () => {
   await connectDB();
-  const products = await ProductRepository.findAll({});
-  return products;
+  return await ProductRepository.findAll({});
 };
 
 export const createProduct = async (
