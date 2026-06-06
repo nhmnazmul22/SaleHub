@@ -49,5 +49,4 @@ export const userUpdateSchemaType = z.object({
     updatedAt: z.date().optional(),
 });
 
-export type UserType = z.infer<typeof userSchemaType>;
-export type UserUpdateType = z.infer<typeof userUpdateSchemaType>;
+

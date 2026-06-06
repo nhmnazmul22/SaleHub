@@ -1,6 +1,6 @@
 import { connectDB } from "@/config/database";
 import * as UserRepository from "@/features/user/server/user.repository";
-import { UserType, UserUpdateType } from "../shared/user.validation";
+import { UserType, UserUpdateType } from "../shared/type";
 import { BusinessError } from "@/shared/errors/BusinessError";
 import ResponseStatus from "@/config/status";
 import mongoose from "mongoose";

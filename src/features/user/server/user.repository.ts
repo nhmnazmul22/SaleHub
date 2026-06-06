@@ -1,5 +1,5 @@
 import UserModel from "@/features/user/server/user.model";
-import {UserType, UserUpdateType,} from "@/features/user/shared/user.validation";
+import {UserType, UserUpdateType,} from "@/features/user/shared/type";
 import {Types, UpdateWriteOpResult} from "mongoose";
 
 export const findAll = async (
