@@ -1,24 +1,24 @@
 import {NextRequest, NextResponse} from "next/server";
 import {handleError} from "@/helper/error.helper";
 import {
-    specificationKeyInputSchema,
-    specificationKeyUpdateSchema,
+    specificationValueInputSchema,
+    specificationValueUpdateSchema,
 } from "@/features/specifications/shared/specification.validation";
 import {ValidationError} from "@/shared/errors/ValidationError";
 import z from "zod";
-import * as SpecificationKeyService from "@/features/specifications/server/SpecificationKey/specificationKey.service"
+import * as SpecificationValueService from "@/features/specifications/server/SpecificationValues/specificationValue.service"
 import ResponseStatus from "@/config/status";
 
-type SpecificationKeyRouteContext = {
+type SpecificationValueRouteContext = {
     params: Promise<{ id: string }>;
 };
 
-export const getSpecificationsKeys = async () => {
+export const getSpecificationsValues = async () => {
     try {
-        const result = await SpecificationKeyService.getSpecificationKeys();
+        const result = await SpecificationValueService.getSpecificationValues();
         return NextResponse.json({
             success: true,
-            message: "Specification keys retrieved successful",
+            message: "Specification values retrieved successful",
             data: result
         }, {
             status: ResponseStatus.SUCCESS
@@ -29,19 +29,19 @@ export const getSpecificationsKeys = async () => {
     }
 }
 
-export const createSpecificationKey = async (req: NextRequest) => {
+export const createSpecificationValue = async (req: NextRequest) => {
     try {
         const body = await req.json();
-        const validationResult = specificationKeyInputSchema.safeParse(body);
+        const validationResult = specificationValueInputSchema.safeParse(body);
 
         if (!validationResult.success) {
             throw new ValidationError(z.flattenError(validationResult.error).fieldErrors);
         }
 
-        const result = await SpecificationKeyService.createSpecificationKey(validationResult.data);
+        const result = await SpecificationValueService.createSpecificationValue(validationResult.data);
         return NextResponse.json({
             success: true,
-            message: "Successfully created specification key",
+            message: "Successfully created specification value",
             data: result
         }, {status: ResponseStatus.CREATED})
 
@@ -50,16 +50,16 @@ export const createSpecificationKey = async (req: NextRequest) => {
     }
 }
 
-export const getSpecificationKeyById = async (
-    ctx: SpecificationKeyRouteContext,
+export const getSpecificationValueById = async (
+    ctx: SpecificationValueRouteContext,
 ) => {
     try {
         const {id} = await ctx.params;
-        const result = await SpecificationKeyService.getSpecificationKeyById(id);
+        const result = await SpecificationValueService.getSpecificationValueById(id);
 
         return NextResponse.json({
             success: true,
-            message: "Specification key retrieved successful",
+            message: "Specification value retrieved successful",
             data: result
         }, {status: ResponseStatus.SUCCESS})
     } catch (error) {
@@ -67,23 +67,23 @@ export const getSpecificationKeyById = async (
     }
 }
 
-export const updateSpecificationKey = async (
-    ctx: SpecificationKeyRouteContext,
+export const updateSpecificationValue = async (
+    ctx: SpecificationValueRouteContext,
     req: NextRequest,
 ) => {
     try {
         const {id} = await ctx.params;
         const body = await req.json();
-        const validationResult = specificationKeyUpdateSchema.safeParse(body);
+        const validationResult = specificationValueUpdateSchema.safeParse(body);
 
         if (!validationResult.success) {
             throw new ValidationError(z.flattenError(validationResult.error).fieldErrors);
         }
 
-        const result = await SpecificationKeyService.updateSpecificationKey(id, validationResult.data);
+        const result = await SpecificationValueService.updateSpecificationValue(id, validationResult.data);
         return NextResponse.json({
             success: true,
-            message: "Specification key updated successful",
+            message: "Specification value updated successful",
             data: result
         }, {status: ResponseStatus.ACCEPTED})
     } catch (error) {
@@ -91,16 +91,16 @@ export const updateSpecificationKey = async (
     }
 }
 
-export const deleteSpecificationKey = async (
-    ctx: SpecificationKeyRouteContext,
+export const deleteSpecificationValue = async (
+    ctx: SpecificationValueRouteContext,
 ) => {
     try {
         const {id} = await ctx.params;
-        const result = await SpecificationKeyService.deleteSpecificationKey(id);
+        const result = await SpecificationValueService.deleteSpecificationValue(id);
 
         return NextResponse.json({
             success: true,
-            message: "Specification key deleted successful",
+            message: "Specification value deleted successful",
             data: result
         }, {status: ResponseStatus.SUCCESS})
     } catch (error) {
