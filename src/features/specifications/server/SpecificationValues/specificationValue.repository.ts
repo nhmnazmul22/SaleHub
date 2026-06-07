@@ -5,6 +5,7 @@ import {
     SpecificationValueUpdateType,
 } from "@/features/specifications/shared/type";
 import {SpecificationValueModel} from "@/features/specifications/server/SpecificationValues/specificationValue.model";
+import {converteObjectId} from "@/lib/utils";
 
 
 export const findAll = async (
@@ -23,7 +24,7 @@ export const findOneByQuery = async (
 };
 
 export const findById = async (id: string): Promise<SpecificationValue | null> => {
-    return SpecificationValueModel.findOne({_id: new Types.ObjectId(id)}).populate({
+    return SpecificationValueModel.findOne({_id: converteObjectId(id)}).populate({
         path: "keyId",
         select: "_id key",
     });
