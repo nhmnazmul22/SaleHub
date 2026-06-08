@@ -5,7 +5,7 @@ import {
     SpecificationValueUpdateType,
 } from "@/features/specifications/shared/type";
 import {SpecificationValueModel} from "@/features/specifications/server/SpecificationValues/specificationValue.model";
-import {converteObjectId} from "@/lib/utils";
+import {convertedObjectId} from "@/lib/utils";
 
 
 export const findAll = async (
@@ -24,7 +24,7 @@ export const findOneByQuery = async (
 };
 
 export const findById = async (id: string): Promise<SpecificationValue | null> => {
-    return SpecificationValueModel.findOne({_id: converteObjectId(id)}).populate({
+    return SpecificationValueModel.findOne({_id: convertedObjectId(id)}).populate({
         path: "keyId",
         select: "_id key",
     });
@@ -39,11 +39,11 @@ export const updateById = async (
     data: Partial<SpecificationValueUpdateType>,
 ): Promise<UpdateWriteOpResult> => {
     return SpecificationValueModel.updateOne(
-        {_id: new Types.ObjectId(id)},
+        {_id: convertedObjectId(id)},
         {$set: data},
     );
 };
 
 export const deleteById = async (id: string) => {
-    return SpecificationValueModel.deleteOne({_id: new Types.ObjectId(id)});
+    return SpecificationValueModel.deleteOne({_id: convertedObjectId(id)});
 };
