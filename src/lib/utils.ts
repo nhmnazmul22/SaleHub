@@ -23,6 +23,6 @@ export const buildTree = (
     }));
 };
 
-export const converteObjectId = (id: string)=>{
-    return new Types.ObjectId(id)
-}
+export const convertedObjectId = (id: string) => {
+  return new Types.ObjectId(id);
+};

